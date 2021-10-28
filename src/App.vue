@@ -1,4 +1,5 @@
 <template>
+  <navigation-header />
   <router-view />
 </template>
 
@@ -24,3 +25,14 @@
   color: #42b983;
 } */
 </style>
+
+<script>
+import NavigationHeader from "./components/NavigationHeader.vue";
+
+export default {
+  name: "App",
+  components: {
+    NavigationHeader,
+  },
+};
+</script>
