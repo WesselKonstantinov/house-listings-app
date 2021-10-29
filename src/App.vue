@@ -1,29 +1,26 @@
 <template>
   <navigation-header />
-  <router-view />
+  <div class="container">
+    <router-view />
+  </div>
 </template>
 
 <style>
-/* #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-#nav {
-  padding: 30px;
+body {
+  margin: 0;
+  background-color: #e8e8e8;
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+.container {
+  max-width: 900px;
+  margin: 0 auto;
 }
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-} */
 </style>
 
 <script>
