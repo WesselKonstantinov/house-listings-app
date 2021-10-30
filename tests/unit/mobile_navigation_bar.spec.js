@@ -1,5 +1,6 @@
 import { shallowMount } from "@vue/test-utils";
 import MobileNavigationBar from "@/components/MobileNavigationBar.vue";
+import HomeIcon from "../../src/assets/ic_mobile_navigarion_home.png";
 
 describe("MobileNavigationBar.vue", () => {
   const wrapper = shallowMount(MobileNavigationBar);
@@ -9,7 +10,7 @@ describe("MobileNavigationBar.vue", () => {
   });
 
   it("renders a link with a house icon", () => {
-    const navItem = wrapper.find("img[src*='house']");
-    expect(navItem.exists()).toBeTruthy();
+    const navItem = wrapper.findAll(".nav__icon").at(0);
+    expect(navItem.attributes("src")).toEqual(HomeIcon);
   });
 });
