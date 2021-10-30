@@ -1,5 +1,6 @@
 <template>
   <navigation-header />
+  <mobile-navigation-bar />
   <div class="container">
     <router-view />
   </div>
@@ -25,11 +26,13 @@ body {
 
 <script>
 import NavigationHeader from "./components/NavigationHeader.vue";
+import MobileNavigationBar from "./components/MobileNavigationBar.vue";
 
 export default {
   name: "App",
   components: {
     NavigationHeader,
+    MobileNavigationBar,
   },
 };
 </script>
