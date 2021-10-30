@@ -18,11 +18,12 @@
   </header>
 </template>
 
-<style>
+<style scoped>
 .header {
   background-color: #ffffff;
   font-size: 18px;
   padding: 0.5em;
+  display: none; /* Hide navigation header for smaller screens */
 }
 
 .header__container {
@@ -47,6 +48,12 @@
 
 .nav__link {
   text-decoration: none;
+}
+
+@media screen and (min-width: 768px) {
+  .header {
+    display: block; /* Display navigation header on larger screens */
+  }
 }
 </style>
 
