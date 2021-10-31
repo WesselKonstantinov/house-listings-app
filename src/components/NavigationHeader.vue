@@ -48,6 +48,12 @@
 
 .nav__link {
   text-decoration: none;
+  color: #c3c3c3;
+}
+
+.router-link-exact-active {
+  color: #000000;
+  font-weight: 700;
 }
 
 @media screen and (min-width: 768px) {

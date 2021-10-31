@@ -7,6 +7,8 @@
 </template>
 
 <style>
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,500;0,600;0,700;1,500&family=Open+Sans:wght@400;600&display=swap");
+
 *,
 *::before,
 *::after {
@@ -14,8 +16,9 @@
 }
 
 body {
+  font-family: "Montserrat", sans-serif;
   margin: 0;
-  background-color: #e8e8e8;
+  background-color: #f6f6f6;
 }
 
 .container {
