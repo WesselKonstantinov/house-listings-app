@@ -47,6 +47,7 @@
   width: 100%;
   background-color: #ffffff;
   position: fixed;
+  overflow: hidden;
   bottom: 0;
 }
 
