@@ -24,10 +24,12 @@ body {
 .container {
   max-width: 900px;
   margin: 0 auto;
+  width: 90%;
 }
 </style>
 
 <script>
+import { mapActions } from "vuex";
 import NavigationHeader from "./components/NavigationHeader.vue";
 import MobileNavigationBar from "./components/MobileNavigationBar.vue";
 
@@ -36,6 +38,12 @@ export default {
   components: {
     NavigationHeader,
     MobileNavigationBar,
+  },
+  methods: {
+    ...mapActions(["getHouseListings"]),
+  },
+  created() {
+    this.getHouseListings();
   },
 };
 </script>
