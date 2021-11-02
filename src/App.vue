@@ -1,9 +1,9 @@
 <template>
   <navigation-header />
   <mobile-navigation-bar />
-  <div class="container">
+  <main class="container">
     <router-view />
-  </div>
+  </main>
 </template>
 
 <style>
@@ -22,7 +22,7 @@ body {
 }
 
 .container {
-  max-width: 900px;
+  max-width: 1080px;
   margin: 0 auto;
   width: 90%;
 }

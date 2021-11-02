@@ -1,21 +1,21 @@
 <template>
   <div class="card">
-    <img :src="houseListing.image" class="card__image" />
+    <img :src="houseListing.image" alt="House listing" class="card__image" />
     <div class="card__info">
       <p class="card__address">{{ houseListing.location.street }}</p>
       <p class="card__price">{{ formattedPrice }}</p>
       <p class="card__location">{{ zipCodeAndCity }}</p>
       <div class="card__icons-container">
         <div class="card__icon-set">
-          <img src="../assets/ic_bed.png" class="card__icon" />
+          <img src="../assets/ic_bed.png" alt="Bed icon" class="card__icon" />
           <span class="card__unit">{{ houseListing.rooms.bedrooms }}</span>
         </div>
         <div class="card__icon-set">
-          <img src="../assets/ic_bath.png" class="card__icon" />
+          <img src="../assets/ic_bath.png" alt="Bath icon" class="card__icon" />
           <span class="card__unit">{{ houseListing.rooms.bathrooms }}</span>
         </div>
         <div class="card__icon-set">
-          <img src="../assets/ic_size.png" class="card__icon" />
+          <img src="../assets/ic_size.png" alt="Size icon" class="card__icon" />
           <span class="card__unit">{{ houseListing.size }} m2</span>
         </div>
       </div>

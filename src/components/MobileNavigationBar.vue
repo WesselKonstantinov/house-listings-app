@@ -46,6 +46,7 @@
 .nav {
   width: 100%;
   background-color: #ffffff;
+  box-shadow: 1px 1px 10px #c3c3c3;
   position: fixed;
   overflow: hidden;
   bottom: 0;

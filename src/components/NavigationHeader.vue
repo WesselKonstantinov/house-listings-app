@@ -27,7 +27,7 @@
 }
 
 .header__container {
-  max-width: 900px;
+  max-width: 1080px;
   margin: 0 auto;
   display: flex;
 }
