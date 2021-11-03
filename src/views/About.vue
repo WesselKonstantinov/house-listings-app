@@ -1,6 +1,6 @@
 <template>
   <div class="about-page">
-    <h1 class="about-page__header">About</h1>
+    <h1 class="about-page__mobile-header">About</h1>
     <article class="about-page__content">
       <header class="about-page__article-header">
         <h2>About DTT Real Estate</h2>
@@ -43,7 +43,7 @@
 </template>
 
 <style>
-.about-page__header {
+.about-page__mobile-header {
   text-align: center;
   font-size: 18px;
   margin: 30px;
@@ -100,7 +100,7 @@
 }
 
 @media screen and (min-width: 768px) {
-  .about-page__header {
+  .about-page__mobile-header {
     display: none;
   }
 

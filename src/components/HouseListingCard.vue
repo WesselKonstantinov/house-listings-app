@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <article class="card">
     <img :src="houseListing.image" alt="House listing" class="card__image" />
     <div class="card__info">
       <p class="card__address">{{ houseListing.location.street }}</p>
@@ -20,7 +20,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </article>
 </template>
 
 <style scoped>
