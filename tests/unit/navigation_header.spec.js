@@ -8,8 +8,9 @@ describe("NavigationHeader.vue", () => {
     expect(nav.exists()).toBeTruthy();
   });
 
-  it("renders a link named 'Houses'", () => {
-    const navItem = wrapper.find("router-link");
-    expect(navItem.text()).toBe("Houses");
+  it("renders a link named 'Houses' and one named 'About'", () => {
+    const navItems = wrapper.findAll("router-link");
+    expect(navItems[0].text()).toBe("Houses");
+    expect(navItems[1].text()).toBe("About");
   });
 });
