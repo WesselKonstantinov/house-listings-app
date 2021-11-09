@@ -6,8 +6,15 @@
       <header class="home-page__content-header">
         <h2>Houses</h2>
       </header>
+      <search-bar v-model="searchTerm" />
+      <h3 v-if="searchTerm && houseListingsByLocationCount !== 0">
+        {{ houseListingsByLocationCount }} results found
+      </h3>
+      <no-results-found
+        v-else-if="searchTerm && houseListingsByLocationCount === 0"
+      />
       <house-listing-card
-        v-for="houseListing in houseListings"
+        v-for="houseListing in houseListingsByLocation"
         :key="houseListing.id"
         :houseListing="houseListing"
       />
@@ -48,12 +55,37 @@
 <script>
 import { mapState } from "vuex";
 import HouseListingCard from "../components/HouseListingCard.vue";
+import NoResultsFound from "../components/NoResultsFound.vue";
+import SearchBar from "../components/SearchBar.vue";
 
 export default {
-  components: { HouseListingCard },
+  components: {
+    HouseListingCard,
+    SearchBar,
+    NoResultsFound,
+  },
   name: "Home",
+  data() {
+    return {
+      searchTerm: "",
+    };
+  },
   computed: {
     ...mapState(["isFetching", "houseListings"]),
+    houseListingsByLocation() {
+      return this.houseListings.filter(
+        (houseListing) =>
+          houseListing.location.street
+            .toLowerCase()
+            .includes(this.searchTerm.toLowerCase()) ||
+          houseListing.location.city
+            .toLowerCase()
+            .includes(this.searchTerm.toLowerCase())
+      );
+    },
+    houseListingsByLocationCount() {
+      return this.houseListingsByLocation.length;
+    },
   },
 };
 </script>
