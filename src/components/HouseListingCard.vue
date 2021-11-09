@@ -2,7 +2,7 @@
   <article class="card">
     <img :src="houseListing.image" alt="House listing" class="card__image" />
     <div class="card__info">
-      <p class="card__address">{{ houseListing.location.street }}</p>
+      <h3 class="card__address">{{ houseListing.location.street }}</h3>
       <p class="card__price">{{ formattedPrice }}</p>
       <p class="card__location">{{ zipCodeAndCity }}</p>
       <div class="card__icons-container">
@@ -29,14 +29,12 @@
   border-radius: 10px;
   box-shadow: 1px 1px 5px #c3c3c3;
   display: flex;
-  font-family: "Open Sans", sans-serif;
   font-size: 12px;
   padding: 10px;
   margin-bottom: 20px;
 }
 
 .card__address {
-  font-weight: 600;
   margin: 0;
 }
 
@@ -72,7 +70,7 @@
 }
 
 .card__price {
-  margin: 0px;
+  margin: 0;
   color: #4a4b4c;
 }
 

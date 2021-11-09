@@ -50,7 +50,6 @@
 }
 
 .about-page__article-body {
-  font-family: "Open Sans", sans-serif;
   font-size: 12px;
   color: #4a4b4c;
 }
@@ -90,7 +89,6 @@
   color: #4a4b4c;
   display: flex;
   flex-direction: column;
-  font-family: "Open Sans", sans-serif;
   font-size: 12px;
   margin-left: 20px;
 }

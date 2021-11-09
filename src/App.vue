@@ -16,9 +16,17 @@
 }
 
 body {
-  font-family: "Montserrat", sans-serif;
+  font-family: "Open Sans", sans-serif;
   margin: 0;
   background-color: #f6f6f6;
+}
+
+h1,
+h2,
+h3,
+/* Select only internal links; external links get different styling */
+a:not([href^="https"]) {
+  font-family: "Montserrat", sans-serif;
 }
 
 .container {
