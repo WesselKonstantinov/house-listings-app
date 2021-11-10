@@ -13,7 +13,7 @@
       @keyup="handleSearch"
     />
     <img
-      class="search-bar__clear"
+      class="search-bar__clear search-bar__clear--hidden"
       alt="Clear icon"
       src="../assets/ic_clear.png"
       @click="handleReset"
@@ -40,7 +40,14 @@
   right: 14px;
   width: 15px;
   cursor: pointer;
+}
+
+.search-bar__clear--hidden {
   visibility: hidden;
+}
+
+.search-bar__clear--visible {
+  visibility: visible;
 }
 
 .search-bar__input {
@@ -92,16 +99,25 @@ export default {
     handleSearch(e) {
       if (
         e.target.value &&
-        e.target.nextSibling.style.visibility !== "visible"
+        !e.target.nextSibling.classList.contains("search-bar__clear--visible")
       ) {
-        e.target.nextSibling.style.visibility = "visible";
+        e.target.nextSibling.classList.replace(
+          "search-bar__clear--hidden",
+          "search-bar__clear--visible"
+        );
       } else if (!e.target.value) {
-        e.target.nextSibling.style.visibility = "hidden";
+        e.target.nextSibling.classList.replace(
+          "search-bar__clear--visible",
+          "search-bar__clear--hidden"
+        );
       }
     },
     handleReset(e) {
       this.$emit("update:modelValue", "");
-      e.target.style.visibility = "hidden";
+      e.target.classList.replace(
+        "search-bar__clear--visible",
+        "search-bar__clear--hidden"
+      );
     },
   },
 };
