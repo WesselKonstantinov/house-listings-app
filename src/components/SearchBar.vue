@@ -1,32 +1,84 @@
 <template>
-  <input
-    placeholder="Search for a house"
-    :value="modelValue"
-    @input="$emit('update:modelValue', $event.target.value)"
-  />
+  <div class="search-bar">
+    <img
+      class="search-bar__search"
+      alt="Search icon"
+      src="../assets/ic_search.png"
+    />
+    <input
+      class="search-bar__input"
+      placeholder="Search for a house"
+      :value="modelValue"
+      @input="$emit('update:modelValue', $event.target.value)"
+      @keyup="handleSearch"
+    />
+    <img
+      class="search-bar__clear"
+      alt="Clear icon"
+      src="../assets/ic_clear.png"
+      @click="handleReset"
+    />
+  </div>
 </template>
 
-<style>
-input {
+<style scoped>
+.search-bar {
+  position: relative;
+  display: flex;
+}
+
+.search-bar__search {
+  position: absolute;
+  top: 8px;
+  left: 14px;
+  width: 15px;
+}
+
+.search-bar__clear {
+  position: absolute;
+  top: 8px;
+  right: 14px;
+  width: 15px;
+  cursor: pointer;
+  visibility: hidden;
+}
+
+.search-bar__input {
   background-color: #e8e8e8;
-  background-image: url("../assets/ic_search.png");
-  background-position: 15px 8px;
-  background-repeat: no-repeat;
-  border: none;
+  border: 1px solid transparent;
   border-radius: 5px;
+  color: #4a4b4c;
   font-family: inherit;
   font-size: 12px;
-  padding: 10px;
-  padding-left: 50px;
+  height: 30px;
+  outline: none;
+  padding: 2px 30px 2px 40px;
   width: 100%;
 }
 
+.search-bar__input:hover,
+.search-bar__input:focus {
+  border: 1px solid #c3c3c3;
+}
+
 @media screen and (min-width: 768px) {
-  input {
-    background-position: 15px 15px;
+  .search-bar__input {
     font-size: 16px;
-    padding: 15px;
-    padding-left: 50px;
+    height: 45px;
+    padding-left: 60px;
+    padding-right: 50px;
+  }
+
+  .search-bar__search {
+    top: 13px;
+    left: 25px;
+    width: 20px;
+  }
+
+  .search-bar__clear {
+    top: 13px;
+    right: 25px;
+    width: 20px;
   }
 }
 </style>
@@ -36,5 +88,21 @@ export default {
   name: "SearchBar",
   props: ["modelValue"],
   emits: ["update:modelValue"],
+  methods: {
+    handleSearch(e) {
+      if (
+        e.target.value &&
+        e.target.nextSibling.style.visibility !== "visible"
+      ) {
+        e.target.nextSibling.style.visibility = "visible";
+      } else if (!e.target.value) {
+        e.target.nextSibling.style.visibility = "hidden";
+      }
+    },
+    handleReset(e) {
+      this.$emit("update:modelValue", "");
+      e.target.style.visibility = "hidden";
+    },
+  },
 };
 </script>
