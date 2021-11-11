@@ -6,7 +6,10 @@
       <header class="home-page__content-header">
         <h2>Houses</h2>
       </header>
-      <search-bar v-model="searchTerm" />
+      <div class="home-page__content-tools">
+        <search-bar v-model="searchTerm" />
+        <sort-button-toolbar />
+      </div>
       <h3 v-if="searchTerm && houseListingsByLocationCount !== 0">
         {{ houseListingsByLocationCount }} results found
       </h3>
@@ -49,11 +52,17 @@
   .home-page__content-header h2 {
     font-size: 22px;
   }
+
+  .home-page__content-tools {
+    display: flex;
+    justify-content: space-between;
+  }
 }
 </style>
 
 <script>
 import { mapState } from "vuex";
+import SortButtonToolbar from "../components/SortButtonToolbar.vue";
 import HouseListingCard from "../components/HouseListingCard.vue";
 import NoResultsFound from "../components/NoResultsFound.vue";
 import SearchBar from "../components/SearchBar.vue";
@@ -63,6 +72,7 @@ export default {
     HouseListingCard,
     SearchBar,
     NoResultsFound,
+    SortButtonToolbar,
   },
   name: "Home",
   data() {

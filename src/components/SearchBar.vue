@@ -25,6 +25,7 @@
 .search-bar {
   position: relative;
   display: flex;
+  margin-bottom: 20px;
 }
 
 .search-bar__search {

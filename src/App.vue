@@ -24,6 +24,7 @@ body {
 h1,
 h2,
 h3,
+button,
 /* Select only internal links; external links get different styling */
 a:not([href^="https"]) {
   font-family: "Montserrat", sans-serif;
