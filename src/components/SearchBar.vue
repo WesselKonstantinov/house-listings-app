@@ -94,7 +94,9 @@
 <script>
 export default {
   name: "SearchBar",
-  props: ["modelValue"],
+  props: {
+    modelValue: String,
+  },
   emits: ["update:modelValue"],
   methods: {
     handleSearch(e) {
