@@ -1,8 +1,30 @@
 <template>
   <div class="button-group">
-    <button type="button" title="Sort by price" class="button">Price</button>
-    <button type="button" title="Sort by size" class="button">Size</button>
-    <button type="button" title="Sort by construction year" class="button">
+    <button
+      class="button"
+      :class="isActive('price')"
+      type="button"
+      title="Sort by price"
+      @click="$emit('changeSortOption', 'price')"
+    >
+      Price
+    </button>
+    <button
+      class="button"
+      :class="isActive('size')"
+      type="button"
+      title="Sort by size"
+      @click="$emit('changeSortOption', 'size')"
+    >
+      Size
+    </button>
+    <button
+      class="button"
+      :class="isActive('constructionYear')"
+      type="button"
+      title="Sort by construction year"
+      @click="$emit('changeSortOption', 'constructionYear')"
+    >
       Year
     </button>
   </div>
@@ -47,5 +69,14 @@
 <script>
 export default {
   name: "SortButtonToolbar",
+  props: {
+    sortOption: String,
+  },
+  emits: ["changeSortOption"],
+  methods: {
+    isActive(selectedSortOption) {
+      return this.sortOption === selectedSortOption ? "button--active" : "";
+    },
+  },
 };
 </script>

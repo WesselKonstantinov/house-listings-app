@@ -8,18 +8,21 @@
       </header>
       <div class="home-page__content-tools">
         <search-bar v-model="searchTerm" />
-        <sort-button-toolbar />
+        <sort-button-toolbar
+          :sort-option="sortOption"
+          @change-sort-option="onChangeSortOption"
+        />
       </div>
-      <h3 v-if="searchTerm && houseListingsByLocationCount !== 0">
-        {{ houseListingsByLocationCount }} results found
+      <h3 v-if="searchTerm && sortedHouseListingsByLocationCount !== 0">
+        {{ sortedHouseListingsByLocationCount }} results found
       </h3>
       <no-results-found
-        v-else-if="searchTerm && houseListingsByLocationCount === 0"
+        v-else-if="searchTerm && sortedHouseListingsByLocationCount === 0"
       />
       <house-listing-card
-        v-for="houseListing in houseListingsByLocation"
+        v-for="houseListing in sortedHouseListingsByLocation"
         :key="houseListing.id"
-        :houseListing="houseListing"
+        :house-listing="houseListing"
       />
     </article>
   </div>
@@ -78,23 +81,31 @@ export default {
   data() {
     return {
       searchTerm: "",
+      sortOption: "price",
     };
   },
   computed: {
     ...mapState(["isFetching", "houseListings"]),
-    houseListingsByLocation() {
-      return this.houseListings.filter(
-        (houseListing) =>
-          houseListing.location.street
-            .toLowerCase()
-            .includes(this.searchTerm.toLowerCase()) ||
-          houseListing.location.city
-            .toLowerCase()
-            .includes(this.searchTerm.toLowerCase())
-      );
+    sortedHouseListingsByLocation() {
+      return this.houseListings
+        .filter(
+          (houseListing) =>
+            houseListing.location.street
+              .toLowerCase()
+              .includes(this.searchTerm.toLowerCase()) ||
+            houseListing.location.city
+              .toLowerCase()
+              .includes(this.searchTerm.toLowerCase())
+        )
+        .sort((a, b) => a[this.sortOption] - b[this.sortOption]);
     },
-    houseListingsByLocationCount() {
-      return this.houseListingsByLocation.length;
+    sortedHouseListingsByLocationCount() {
+      return this.sortedHouseListingsByLocation.length;
+    },
+  },
+  methods: {
+    onChangeSortOption(newSortOption) {
+      this.sortOption = newSortOption;
     },
   },
 };
