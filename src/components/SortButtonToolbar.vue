@@ -2,7 +2,7 @@
   <div class="button-group">
     <button
       class="button"
-      :class="isActive('price')"
+      :class="sortOptionHasActiveClass('price')"
       type="button"
       title="Sort by price"
       @click="$emit('changeSortOption', 'price')"
@@ -11,7 +11,7 @@
     </button>
     <button
       class="button"
-      :class="isActive('size')"
+      :class="sortOptionHasActiveClass('size')"
       type="button"
       title="Sort by size"
       @click="$emit('changeSortOption', 'size')"
@@ -20,7 +20,7 @@
     </button>
     <button
       class="button"
-      :class="isActive('constructionYear')"
+      :class="sortOptionHasActiveClass('constructionYear')"
       type="button"
       title="Sort by construction year"
       @click="$emit('changeSortOption', 'constructionYear')"
@@ -74,7 +74,7 @@ export default {
   },
   emits: ["changeSortOption"],
   methods: {
-    isActive(selectedSortOption) {
+    sortOptionHasActiveClass(selectedSortOption) {
       return this.sortOption === selectedSortOption ? "button--active" : "";
     },
   },

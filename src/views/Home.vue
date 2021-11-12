@@ -13,14 +13,14 @@
           @change-sort-option="onChangeSortOption"
         />
       </div>
-      <h3 v-if="searchTerm && sortedHouseListingsByLocationCount !== 0">
-        {{ sortedHouseListingsByLocationCount }} results found
+      <h3 v-if="searchTerm && sortedHouseListingsCount !== 0">
+        {{ sortedHouseListingsCount }} results found
       </h3>
       <no-results-found
-        v-else-if="searchTerm && sortedHouseListingsByLocationCount === 0"
+        v-else-if="searchTerm && sortedHouseListingsCount === 0"
       />
       <house-listing-card
-        v-for="houseListing in sortedHouseListingsByLocation"
+        v-for="houseListing in sortedHouseListings"
         :key="houseListing.id"
         :house-listing="houseListing"
       />
@@ -86,7 +86,7 @@ export default {
   },
   computed: {
     ...mapState(["isFetching", "houseListings"]),
-    sortedHouseListingsByLocation() {
+    sortedHouseListings() {
       return this.houseListings
         .filter(
           (houseListing) =>
@@ -99,8 +99,8 @@ export default {
         )
         .sort((a, b) => a[this.sortOption] - b[this.sortOption]);
     },
-    sortedHouseListingsByLocationCount() {
-      return this.sortedHouseListingsByLocation.length;
+    sortedHouseListingsCount() {
+      return this.sortedHouseListings.length;
     },
   },
   methods: {
