@@ -32,6 +32,7 @@
   font-size: 12px;
   padding: 10px;
   margin-bottom: 20px;
+  cursor: pointer;
 }
 
 .card__address {
@@ -41,10 +42,12 @@
 .card__icon {
   width: 12px;
   height: 12px;
+  align-self: center;
 }
 
 .card__icon-set {
   margin-right: 10px;
+  display: inline-flex;
 }
 
 .card__icons-container {
