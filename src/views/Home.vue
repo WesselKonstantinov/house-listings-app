@@ -23,6 +23,7 @@
         v-for="houseListing in sortedHouseListings"
         :key="houseListing.id"
         :house-listing="houseListing"
+        @click="onChangeHouseListingDetailRoute(houseListing)"
       />
     </article>
   </div>
@@ -106,6 +107,12 @@ export default {
   methods: {
     onChangeSortOption(newSortOption) {
       this.sortOption = newSortOption;
+    },
+    onChangeHouseListingDetailRoute(houseListing) {
+      this.$router.push({
+        name: "HouseListingDetail",
+        params: { id: houseListing.id },
+      });
     },
   },
 };
