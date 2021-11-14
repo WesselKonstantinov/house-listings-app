@@ -17,7 +17,7 @@
 
 body {
   font-family: "Open Sans", sans-serif;
-  margin: 0;
+  margin: 0 0 79px 0; /* Prevent content from being hidden behind mobile navbar */
   background-color: #f6f6f6;
 }
 
@@ -34,6 +34,12 @@ a:not([href^="https"]) {
   max-width: 1080px;
   margin: 0 auto;
   width: 90%;
+}
+
+@media screen and (min-width: 768px) {
+  body {
+    margin: 0;
+  }
 }
 </style>
 
