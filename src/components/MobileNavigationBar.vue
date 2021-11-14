@@ -50,6 +50,7 @@
   position: fixed;
   overflow: hidden;
   bottom: 0;
+  z-index: 1;
 }
 
 .nav__list {
