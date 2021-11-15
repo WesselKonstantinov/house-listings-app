@@ -23,6 +23,15 @@ export default createStore({
       state.houseListings.find(
         (houseListing) => houseListing.id === state.selectedHouseListingId
       ),
+    recommendedHouseListingsByLocation: (state, getters) =>
+      state.houseListings
+        .filter(
+          (houseListing) =>
+            houseListing.location.city ===
+              getters.selectedHouseListing.location.city &&
+            houseListing.id !== getters.selectedHouseListing.id
+        )
+        .slice(0, 3),
   },
   actions: {
     getHouseListings({ commit }) {
