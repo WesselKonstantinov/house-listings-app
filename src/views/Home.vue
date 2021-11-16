@@ -61,6 +61,35 @@
     display: flex;
     justify-content: space-between;
   }
+
+  .home-page .card {
+    padding: 15px;
+    font-size: 16px;
+  }
+
+  .home-page .card__icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .home-page .card__icon-set {
+    margin-right: 15px;
+  }
+
+  .home-page .card__image {
+    height: 140px;
+    max-width: 140px;
+  }
+
+  .home-page .card__address,
+  .home-page .card__price,
+  .home-page .card__location {
+    padding-bottom: 13px;
+  }
+
+  .home-page .card__icons-container {
+    padding-top: 0;
+  }
 }
 </style>
 

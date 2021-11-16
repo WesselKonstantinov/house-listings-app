@@ -23,7 +23,7 @@
   </article>
 </template>
 
-<style scoped>
+<style>
 .card {
   background-color: #ffffff;
   border-radius: 10px;
@@ -35,8 +35,18 @@
   cursor: pointer;
 }
 
-.card__address {
+.card__info > * {
   margin: 0;
+}
+
+.card__address {
+  margin-top: 5px;
+}
+
+.card__address,
+.card__price,
+.card__location {
+  padding-bottom: 3px;
 }
 
 .card__icon {
@@ -51,7 +61,7 @@
 }
 
 .card__icons-container {
-  margin-top: 20px;
+  padding-top: 10px;
   display: flex;
 }
 
@@ -64,47 +74,19 @@
 }
 
 .card__info {
-  margin-left: 20px;
+  margin-left: 15px;
 }
 
 .card__location {
-  margin: 0;
   color: #c3c3c3;
 }
 
 .card__price {
-  margin: 0;
   color: #4a4b4c;
 }
 
 .card__unit {
   margin-left: 5px;
-}
-
-@media screen and (min-width: 768px) {
-  .card {
-    padding: 15px;
-    font-size: 16px;
-  }
-
-  .card__icon {
-    width: 16px;
-    height: 16px;
-  }
-
-  .card__icon-set {
-    margin-right: 15px;
-  }
-
-  .card__image {
-    height: 150px;
-    max-width: 150px;
-  }
-
-  .card__address,
-  .card__price {
-    margin-bottom: 16px;
-  }
 }
 </style>
 
