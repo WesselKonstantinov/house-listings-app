@@ -13,89 +13,96 @@
       </router-link>
       <h2 class="back-link__label">Back to overview</h2>
     </div>
-    <img
-      :src="selectedHouseListing.image"
-      alt="House listing"
-      class="house-listing-page__image"
-    />
-    <article class="house-listing-details">
-      <div class="house-listing-details__wrapper">
-        <h2>{{ selectedHouseListing.location.street }}</h2>
-        <div class="house-listing-details__icon-set">
-          <img
-            src="../assets/ic_location.png"
-            alt="Location icon"
-            class="house-listing-details__icon"
-          />
-          <span class="house-listing-details__unit">{{ zipCodeAndCity }}</span>
-        </div>
-        <div class="house-listing-details__icons-container">
-          <div class="house-listing-details__icon-set">
-            <img
-              src="../assets/ic_price.png"
-              alt="Price icon"
-              class="house-listing-details__icon"
-            />
-            <span class="house-listing-details__unit">{{
-              formattedPrice
-            }}</span>
+    <div class="house-listing-page__content">
+      <div class="house-listing-page__main">
+        <img
+          :src="selectedHouseListing.image"
+          alt="House listing"
+          class="house-listing-page__image"
+        />
+        <article class="house-listing-details">
+          <div class="house-listing-details__wrapper">
+            <h2>{{ selectedHouseListing.location.street }}</h2>
+            <div class="house-listing-details__icon-set">
+              <img
+                src="../assets/ic_location.png"
+                alt="Location icon"
+                class="house-listing-details__icon"
+              />
+              <span class="house-listing-details__unit">{{
+                zipCodeAndCity
+              }}</span>
+            </div>
+            <div class="house-listing-details__icons-container">
+              <div class="house-listing-details__icon-set">
+                <img
+                  src="../assets/ic_price.png"
+                  alt="Price icon"
+                  class="house-listing-details__icon"
+                />
+                <span class="house-listing-details__unit">{{
+                  formattedPrice
+                }}</span>
+              </div>
+              <div class="house-listing-details__icon-set">
+                <img
+                  src="../assets/ic_size.png"
+                  alt="Size icon"
+                  class="house-listing-details__icon"
+                />
+                <span class="house-listing-details__unit"
+                  >{{ selectedHouseListing.size }} m2
+                </span>
+              </div>
+              <div class="house-listing-details__icon-set">
+                <img
+                  src="../assets/ic_construction_date.png"
+                  alt="Construction date icon"
+                  class="house-listing-details__icon"
+                />
+                <span class="house-listing-details__unit"
+                  >Built in {{ selectedHouseListing.constructionYear }}
+                </span>
+              </div>
+            </div>
+            <div class="house-listing-details__icons-container">
+              <div class="house-listing-details__icon-set">
+                <img
+                  src="../assets/ic_bed.png"
+                  alt="Bed icon"
+                  class="house-listing-details__icon"
+                />
+                <span class="house-listing-details__unit">{{
+                  selectedHouseListing.rooms.bedrooms
+                }}</span>
+              </div>
+              <div class="house-listing-details__icon-set">
+                <img
+                  src="../assets/ic_bath.png"
+                  alt="Bath icon"
+                  class="house-listing-details__icon"
+                />
+                <span class="house-listing-details__unit">{{
+                  selectedHouseListing.rooms.bathrooms
+                }}</span>
+              </div>
+              <div class="house-listing-details__icon-set">
+                <img
+                  src="../assets/ic_garage.png"
+                  alt="Garage icon"
+                  class="house-listing-details__icon"
+                />
+                <span class="house-listing-details__unit">{{
+                  isGaragePresent
+                }}</span>
+              </div>
+            </div>
+            <p>{{ selectedHouseListing.description }}</p>
           </div>
-          <div class="house-listing-details__icon-set">
-            <img
-              src="../assets/ic_size.png"
-              alt="Size icon"
-              class="house-listing-details__icon"
-            />
-            <span class="house-listing-details__unit"
-              >{{ selectedHouseListing.size }} m2
-            </span>
-          </div>
-          <div class="house-listing-details__icon-set">
-            <img
-              src="../assets/ic_construction_date.png"
-              alt="Construction date icon"
-              class="house-listing-details__icon"
-            />
-            <span class="house-listing-details__unit"
-              >Built in {{ selectedHouseListing.constructionYear }}
-            </span>
-          </div>
-        </div>
-        <div class="house-listing-details__icons-container">
-          <div class="house-listing-details__icon-set">
-            <img
-              src="../assets/ic_bed.png"
-              alt="Bed icon"
-              class="house-listing-details__icon"
-            />
-            <span class="house-listing-details__unit">{{
-              selectedHouseListing.rooms.bedrooms
-            }}</span>
-          </div>
-          <div class="house-listing-details__icon-set">
-            <img
-              src="../assets/ic_bath.png"
-              alt="Bath icon"
-              class="house-listing-details__icon"
-            />
-            <span class="house-listing-details__unit">{{
-              selectedHouseListing.rooms.bathrooms
-            }}</span>
-          </div>
-          <div class="house-listing-details__icon-set">
-            <img
-              src="../assets/ic_garage.png"
-              alt="Garage icon"
-              class="house-listing-details__icon"
-            />
-            <span class="house-listing-details__unit">{{
-              isGaragePresent
-            }}</span>
-          </div>
-        </div>
-        <p>{{ selectedHouseListing.description }}</p>
+        </article>
       </div>
-    </article>
+      <recommended-house-listings-section />
+    </div>
   </div>
 </template>
 
@@ -226,12 +233,22 @@
     display: none;
   }
 }
+
+@media screen and (min-width: 1200px) {
+  .house-listing-page__content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 70px;
+  }
+}
 </style>
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
+import RecommendedHouseListingsSection from "../components/RecommendedHouseListingsSection.vue";
 
 export default {
+  components: { RecommendedHouseListingsSection },
   name: "HouseListingDetail",
   computed: {
     ...mapGetters(["selectedHouseListing"]),
@@ -251,6 +268,10 @@ export default {
   created() {
     /* Route params id needs to be a number instead of a string
     for correct matching with the id of a single house listing object. */
+    const houseListingId = Number(this.$route.params.id);
+    this.setSelectedHouseListing(houseListingId);
+  },
+  updated() {
     const houseListingId = Number(this.$route.params.id);
     this.setSelectedHouseListing(houseListingId);
   },
