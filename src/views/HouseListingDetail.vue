@@ -6,16 +6,12 @@
       link-destination="/"
       class="house-listing-page__back-icon"
     />
-    <div class="back-link">
-      <router-link to="/">
-        <img
-          src="../assets/ic_back_grey.png"
-          alt="Back icon"
-          class="back-link__icon"
-        />
-      </router-link>
-      <h2 class="back-link__label">Back to overview</h2>
-    </div>
+    <go-back-label
+      text="Back to overview"
+      icon="ic_back_grey.png"
+      icon-alt="Back icon"
+      link-destination="/"
+    />
     <div class="house-listing-page__content">
       <div class="house-listing-page__main">
         <img
@@ -110,10 +106,6 @@
 </template>
 
 <style>
-.back-link {
-  display: none;
-}
-
 .house-listing-page {
   /* Give page full width on mobile despite being inside a centered container */
   left: 50%;
@@ -186,21 +178,6 @@
 }
 
 @media screen and (min-width: 768px) {
-  .back-link {
-    display: flex;
-    margin-bottom: 30px;
-  }
-
-  .back-link__icon {
-    position: relative;
-    bottom: 1px;
-  }
-
-  .back-link__label {
-    font-size: 16px;
-    margin: 0 10px;
-  }
-
   .house-listing-page {
     position: static;
     width: initial;
@@ -249,11 +226,13 @@
 <script>
 import { mapGetters, mapMutations } from "vuex";
 import IconButtonLink from "../components/IconButtonLink.vue";
+import GoBackLabel from "../components/GoBackLabel.vue";
 import RecommendedHouseListingsSection from "../components/RecommendedHouseListingsSection.vue";
 
 export default {
   components: {
     IconButtonLink,
+    GoBackLabel,
     RecommendedHouseListingsSection,
   },
   name: "HouseListingDetail",
