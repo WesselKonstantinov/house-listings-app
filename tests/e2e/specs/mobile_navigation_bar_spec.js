@@ -5,20 +5,18 @@ describe("the mobile navigation bar", () => {
   });
 
   it("lets the user navigate to the 'Houses' page and shows which page is active", () => {
-    cy.get(".nav__icon").first().click();
+    cy.get(".nav__list img").first().click();
     cy.url().should("eq", "http://localhost:8080/");
-    cy.get(".nav__icon")
+    cy.get(".nav__list a")
       .first()
-      .parent()
       .should("have.class", "router-link-exact-active");
   });
 
   it("lets the user navigate to the 'About' page and shows which page is active", () => {
-    cy.get(".nav__icon").eq(1).click();
+    cy.get(".nav__list img").eq(1).click();
     cy.url().should("eq", "http://localhost:8080/about");
-    cy.get(".nav__icon")
+    cy.get(".nav__list a")
       .eq(1)
-      .parent()
       .should("have.class", "router-link-exact-active");
   });
 });

@@ -1,7 +1,5 @@
 import { shallowMount } from "@vue/test-utils";
 import MobileNavigationBar from "@/components/MobileNavigationBar.vue";
-import HomeIconActive from "../../src/assets/ic_mobile_navigarion_home_active.png";
-import InfoIcon from "../../src/assets/ic_mobile_navigarion_info.png";
 
 describe("MobileNavigationBar.vue", () => {
   const wrapper = shallowMount(MobileNavigationBar, {
@@ -20,8 +18,12 @@ describe("MobileNavigationBar.vue", () => {
   });
 
   it("renders a link with an active house icon and one with an inactive info icon", () => {
-    const navItems = wrapper.findAll(".nav__icon");
-    expect(navItems[0].attributes("src")).toEqual(HomeIconActive);
-    expect(navItems[1].attributes("src")).toEqual(InfoIcon);
+    const navItems = wrapper.findAllComponents({ name: "IconButtonLink" });
+    expect(navItems.at(0).props("icon")).toEqual(
+      "ic_mobile_navigarion_home_active.png"
+    );
+    expect(navItems.at(1).props("icon")).toEqual(
+      "ic_mobile_navigarion_info.png"
+    );
   });
 });
