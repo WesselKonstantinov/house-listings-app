@@ -1,42 +1,19 @@
 <template>
   <nav class="nav">
     <ul class="nav__list">
-      <li class="nav__item">
-        <!-- Switch normal and active icons depending on the current active route -->
-        <router-link v-if="$route.name === 'Home'" class="nav__link" to="/">
-          <img
-            alt="Home icon"
-            class="nav__icon"
-            src="../assets/ic_mobile_navigarion_home_active.png"
-          />
-        </router-link>
-        <router-link v-else class="nav__link" to="/">
-          <img
-            alt="Home icon"
-            class="nav__icon"
-            src="../assets/ic_mobile_navigarion_home.png"
-          />
-        </router-link>
+      <li>
+        <icon-button-link
+          :icon="getCurrentIcon('Home', 'home')"
+          icon-alt="Home icon"
+          link-destination="/"
+        />
       </li>
-      <li class="nav__item">
-        <router-link
-          v-if="$route.name === 'About'"
-          class="nav__link"
-          to="/about"
-        >
-          <img
-            alt="Info icon"
-            class="nav__icon"
-            src="../assets/ic_mobile_navigarion_info_active.png"
-          />
-        </router-link>
-        <router-link v-else class="nav__link" to="/about">
-          <img
-            alt="Info icon"
-            class="nav__icon"
-            src="../assets/ic_mobile_navigarion_info.png"
-          />
-        </router-link>
+      <li>
+        <icon-button-link
+          :icon="getCurrentIcon('About', 'info')"
+          icon-alt="Info icon"
+          link-destination="/about"
+        />
       </li>
     </ul>
   </nav>
@@ -68,7 +45,17 @@
 </style>
 
 <script>
+import IconButtonLink from "./IconButtonLink.vue";
+
 export default {
   name: "MobileNavigationBar",
+  components: { IconButtonLink },
+  methods: {
+    getCurrentIcon(routeName, iconName) {
+      return this.$route.name === routeName
+        ? `ic_mobile_navigarion_${iconName}_active.png`
+        : `ic_mobile_navigarion_${iconName}.png`;
+    },
+  },
 };
 </script>

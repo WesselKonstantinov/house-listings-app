@@ -1,8 +1,11 @@
 <template>
   <div v-if="selectedHouseListing" class="house-listing-page">
-    <router-link class="house-listing-page__back-icon" to="/">
-      <img src="../assets/ic_back_white.png" alt="Back icon" />
-    </router-link>
+    <icon-button-link
+      icon="ic_back_white.png"
+      icon-alt="Back Icon"
+      link-destination="/"
+      class="house-listing-page__back-icon"
+    />
     <div class="back-link">
       <router-link to="/">
         <img
@@ -245,10 +248,14 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
+import IconButtonLink from "../components/IconButtonLink.vue";
 import RecommendedHouseListingsSection from "../components/RecommendedHouseListingsSection.vue";
 
 export default {
-  components: { RecommendedHouseListingsSection },
+  components: {
+    IconButtonLink,
+    RecommendedHouseListingsSection,
+  },
   name: "HouseListingDetail",
   computed: {
     ...mapGetters(["selectedHouseListing"]),
