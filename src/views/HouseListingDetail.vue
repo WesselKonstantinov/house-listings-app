@@ -4,8 +4,21 @@
       icon="ic_back_white.png"
       icon-alt="Back Icon"
       link-destination="/"
-      class="house-listing-page__back-icon"
+      class="action-icon-back"
     />
+    <div v-if="selectedHouseListing.madeByMe" class="action-icons-container">
+      <icon-button-link
+        icon="ic_edit_white.png"
+        icon-alt="Edit icon"
+        link-destination="/"
+      />
+      <icon-button-link
+        icon="ic_delete_white.png"
+        icon-alt="Delete icon"
+        link-destination="/"
+        class="action-icon-delete"
+      />
+    </div>
     <go-back-label
       text="Back to overview"
       icon="ic_back_grey.png"
@@ -21,7 +34,27 @@
         />
         <article class="house-listing-details">
           <div class="house-listing-details__wrapper">
-            <h2>{{ selectedHouseListing.location.street }}</h2>
+            <div class="house-listing-details__street-and-actions">
+              <h2 class="house-listing-details__street">
+                {{ selectedHouseListing.location.street }}
+              </h2>
+              <div
+                v-if="selectedHouseListing.madeByMe"
+                class="house-listing-details__actions"
+              >
+                <icon-button-link
+                  icon="ic_edit.png"
+                  icon-alt="Edit icon"
+                  link-destination="/"
+                />
+                <icon-button-link
+                  icon="ic_delete.png"
+                  icon-alt="Delete icon"
+                  link-destination="/"
+                  class="action-icon-delete"
+                />
+              </div>
+            </div>
             <div class="house-listing-details__icon-set">
               <img
                 src="../assets/ic_location.png"
@@ -117,10 +150,23 @@
   width: 100vw;
 }
 
-.house-listing-page__back-icon {
+/* Keeps the icons correctly aligned within the main container on mobile */
+.action-icon-back,
+.action-icons-container {
   position: absolute;
   top: 30px;
-  left: 5%; /* Keeps the icon correctly aligned with the rest of the content */
+}
+
+.action-icon-back {
+  left: 5%;
+}
+
+.action-icons-container {
+  right: 5%;
+}
+
+.action-icon-delete {
+  margin-left: 20px;
 }
 
 .house-listing-page__image {
@@ -149,9 +195,13 @@
   color: #4a4b4c;
 }
 
-.house-listing-details h2 {
+.house-listing-details__street {
   font-size: 18px;
-  margin-top: 0;
+  margin: 0;
+}
+
+.house-listing-details__actions {
+  display: none;
 }
 
 .house-listing-details__icons-container {
@@ -209,8 +259,22 @@
     height: 16px;
   }
 
-  .house-listing-page__back-icon {
+  .action-icon-back,
+  .action-icons-container {
     display: none;
+  }
+
+  .house-listing-details__actions {
+    display: initial;
+  }
+
+  .house-listing-details__street-and-actions {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .house-listing-details__actions {
+    align-self: center;
   }
 }
 
