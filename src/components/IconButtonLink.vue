@@ -1,6 +1,10 @@
 <template>
   <router-link :to="linkDestination">
-    <img :src="require(`../assets/${icon}`)" :alt="iconAlt" />
+    <img
+      :src="require(`../assets/${icon}`)"
+      :alt="iconAlt"
+      :class="iconClass"
+    />
   </router-link>
 </template>
 
@@ -18,6 +22,10 @@ export default {
     },
     linkDestination: {
       required: true,
+      type: String,
+    },
+    iconClass: {
+      required: false,
       type: String,
     },
   },
