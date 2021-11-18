@@ -20,6 +20,22 @@
         </div>
       </div>
     </div>
+    <div v-if="houseListing.madeByMe" class="card__actions" @click.stop>
+      <icon-button-link
+        class="card__actions-link"
+        icon="ic_edit.png"
+        icon-alt="Edit icon"
+        link-destination="/"
+        icon-class="card__actions-icon"
+      />
+      <icon-button-link
+        class="card__actions-link"
+        icon="ic_delete.png"
+        icon-alt="Delete icon"
+        link-destination="/"
+        icon-class="card__actions-icon"
+      />
+    </div>
   </article>
 </template>
 
@@ -88,20 +104,43 @@
 .card__unit {
   margin-left: 5px;
 }
+
+.card__actions {
+  margin-left: auto;
+  position: relative;
+  top: 6px;
+}
+
+.card__actions-icon {
+  margin-right: 5px;
+  width: 12px;
+  height: 12px;
+}
+
+@media screen and (min-width: 768px) {
+  .card__actions-icon {
+    margin-right: 15px;
+    width: 16px;
+    height: 16px;
+  }
+}
 </style>
 
 <script>
+import IconButtonLink from "./IconButtonLink.vue";
+
 export default {
   name: "HouseListingCard",
+  components: { IconButtonLink },
   props: {
     houseListing: { required: true, type: Object },
   },
   computed: {
     formattedPrice() {
-      return new Intl.NumberFormat("nl-NL", {
-        style: "currency",
-        currency: "EUR",
-      }).format(this.houseListing.price);
+      const formattedPrice = new Intl.NumberFormat().format(
+        this.houseListing.price
+      );
+      return `€ ${formattedPrice}`;
     },
     zipCodeAndCity() {
       return `${this.houseListing.location.zip} ${this.houseListing.location.city}`;

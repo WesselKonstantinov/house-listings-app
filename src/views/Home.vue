@@ -40,6 +40,30 @@
   display: none;
 }
 
+@media screen and (max-width: 360px) {
+  .home-page .card__image {
+    height: 80px;
+    max-width: 80px;
+  }
+
+  .home-page .card__address {
+    margin: 0;
+    font-size: 12px;
+  }
+
+  .home-page .card__icons-container {
+    padding: 0;
+  }
+
+  .home-page .card__info {
+    margin-left: 8px;
+  }
+
+  .home-page .card__actions {
+    top: 0;
+  }
+}
+
 @media screen and (min-width: 768px) {
   .home-page {
     margin-top: 50px;
