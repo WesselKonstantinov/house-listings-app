@@ -1,9 +1,294 @@
 <template>
   <h2>House listing form</h2>
+  <form class="form">
+    <div class="form__group">
+      <label for="street-name" class="form__label">Street name</label>
+      <input
+        type="text"
+        name="street-name"
+        id="street-name"
+        placeholder="Enter the street name"
+        class="form__input form__input--full"
+        v-model="form.streetName"
+      />
+    </div>
+    <div class="form__group">
+      <label for="house-number" class="form__label">House number</label>
+      <input
+        type="text"
+        name="house-number"
+        id="house-number"
+        placeholder="Enter house number"
+        class="form__input"
+        v-model="form.houseNumber"
+      />
+    </div>
+    <div class="form__group">
+      <label for="addition" class="form__label">Addition (optional)</label>
+      <input
+        type="text"
+        name="addition"
+        id="addition"
+        placeholder="e.g. A"
+        class="form__input"
+        v-model="form.addition"
+      />
+    </div>
+    <div class="form__group">
+      <label for="postal-code" class="form__label">Postal code</label>
+      <input
+        type="text"
+        name="postal-code"
+        id="postal-code"
+        placeholder="e.g. 1000AA"
+        class="form__input"
+        v-model="form.postalCode"
+      />
+    </div>
+    <div class="form__group">
+      <label for="city" class="form__label">City</label>
+      <input
+        type="text"
+        name="city"
+        id="city"
+        placeholder="e.g. Utrecht"
+        class="form__input"
+        v-model="form.city"
+      />
+    </div>
+    <div class="form__group">
+      <label for="house-listing-picture" class="form__label"
+        >Upload picture (PNG or JPG)</label
+      >
+      <input
+        type="file"
+        name="house-listing-picture"
+        id="house-listing-picture"
+        accept="image/png, image/jpg"
+      />
+    </div>
+    <div class="form__group">
+      <label for="price" class="form__label">Price</label>
+      <input
+        type="text"
+        name="price"
+        id="price"
+        placeholder="e.g. €150.000"
+        class="form__input"
+        v-model="form.price"
+      />
+    </div>
+    <div class="form__group">
+      <label for="size" class="form__label">Size</label>
+      <input
+        type="text"
+        name="size"
+        id="size"
+        placeholder="e.g. 60m2"
+        class="form__input"
+        v-model="form.size"
+      />
+    </div>
+    <div class="form__group">
+      <label for="has-garage" class="form__label">Garage</label>
+      <select
+        class="form__select"
+        name="has-garage"
+        id="has-garage"
+        v-model="form.garage"
+      >
+        <option value="">Select</option>
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+      </select>
+    </div>
+    <div class="form__group">
+      <label for="bedrooms" class="form__label">Bedrooms</label>
+      <input
+        type="text"
+        name="bedrooms"
+        id="bedrooms"
+        placeholder="Enter amount"
+        class="form__input"
+        v-model="form.bedrooms"
+      />
+    </div>
+    <div class="form__group">
+      <label for="bathrooms" class="form__label">Bathrooms</label>
+      <input
+        type="text"
+        name="bathrooms"
+        id="bathrooms"
+        placeholder="Enter amount"
+        class="form__input"
+        v-model="form.bathrooms"
+      />
+    </div>
+    <div class="form__group">
+      <label for="construction-date" class="form__label"
+        >Construction date</label
+      >
+      <input
+        type="text"
+        name="construction-date"
+        id="construction-date"
+        placeholder="e.g. 1990"
+        class="form__input"
+        v-model="form.constructionDate"
+      />
+    </div>
+    <div class="form__group">
+      <label for="description" class="form__label">Description</label>
+      <textarea
+        placeholder="Enter description"
+        name="description"
+        id="description"
+        class="form__textarea"
+        v-model="form.description"
+      ></textarea>
+    </div>
+    <div class="form__group">
+      <button type="submit" class="form__submit">Post</button>
+    </div>
+  </form>
 </template>
+
+<style>
+.form {
+  font-size: 12px;
+  display: grid;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
+  gap: 10px;
+  grid-template-areas:
+    "street-name street-name"
+    "house-number addition"
+    "postal-code postal-code"
+    "city city"
+    "picture-upload ."
+    "price price"
+    "size garage"
+    "bedrooms bathrooms"
+    "construction-date construction-date"
+    "description description"
+    "submit submit";
+}
+
+.form__label {
+  color: #4a4b4c;
+  display: block;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.form__group:nth-of-type(1) {
+  grid-area: street-name;
+}
+
+.form__group:nth-of-type(2) {
+  grid-area: house-number;
+}
+
+.form__group:nth-of-type(3) {
+  grid-area: addition;
+}
+
+.form__group:nth-of-type(4) {
+  grid-area: postal-code;
+}
+
+.form__group:nth-of-type(5) {
+  grid-area: city;
+}
+
+.form__group:nth-of-type(6) {
+  grid-area: picture-upload;
+}
+
+.form__group:nth-of-type(7) {
+  grid-area: price;
+}
+
+.form__group:nth-of-type(8) {
+  grid-area: size;
+}
+
+.form__group:nth-of-type(9) {
+  grid-area: garage;
+}
+
+.form__group:nth-of-type(10) {
+  grid-area: bedrooms;
+}
+
+.form__group:nth-of-type(11) {
+  grid-area: bathrooms;
+}
+
+.form__group:nth-of-type(12) {
+  grid-area: construction-date;
+}
+
+.form__group:nth-of-type(13) {
+  grid-area: description;
+}
+
+.form__group:nth-of-type(14) {
+  grid-area: submit;
+}
+
+.form__input,
+.form__select,
+.form__textarea,
+.form__submit {
+  font-family: inherit;
+  font-size: 100%;
+  padding: 1em;
+  border-radius: 5px;
+  border: 1px solid transparent;
+  outline: none;
+  width: 100%;
+}
+
+.form__textarea {
+  resize: none;
+}
+
+.form__submit {
+  background-color: #eb5440;
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+@media screen and (min-width: 768px) {
+  .form {
+    font-size: 14px;
+  }
+}
+</style>
 
 <script>
 export default {
   name: "HouseListingForm",
+  data() {
+    return {
+      form: {
+        streetName: "",
+        houseNumber: "",
+        addition: "",
+        postalCode: "",
+        city: "",
+        price: "",
+        size: "",
+        garage: "",
+        bedrooms: "",
+        bathrooms: "",
+        constructionDate: "",
+        description: "",
+      },
+    };
+  },
 };
 </script>
