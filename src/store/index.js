@@ -6,6 +6,7 @@ export default createStore({
     houseListings: [],
     selectedHouseListingId: null,
     isFetching: false,
+    isConfirmDeleteModalVisible: false,
   },
   mutations: {
     setHouseListings(state, { houseListings }) {
@@ -16,6 +17,14 @@ export default createStore({
     },
     setIsFetching(state, bool) {
       state.isFetching = bool;
+    },
+    setIsConfirmDeleteModalVisible(state, bool) {
+      state.isConfirmDeleteModalVisible = bool;
+    },
+    setUpdatedHouseListings(state, id) {
+      state.houseListings = state.houseListings.filter(
+        (houseListing) => houseListing.id !== id
+      );
     },
   },
   getters: {
@@ -36,7 +45,7 @@ export default createStore({
   actions: {
     getHouseListings({ commit }) {
       commit("setIsFetching", true);
-      return axios
+      axios
         .get(process.env.VUE_APP_API_URL, {
           headers: {
             "X-Api-Key": process.env.VUE_APP_API_KEY,
@@ -50,6 +59,19 @@ export default createStore({
           commit("setIsFetching", false);
           console.error(error);
         });
+    },
+    deleteHouseListing({ commit }, houseListingId) {
+      axios
+        .delete(`${process.env.VUE_APP_API_URL}/${houseListingId}`, {
+          headers: {
+            "X-Api-Key": process.env.VUE_APP_API_KEY,
+          },
+        })
+        .then(() => {
+          commit("setUpdatedHouseListings", houseListingId);
+          commit("setIsConfirmDeleteModalVisible");
+        })
+        .catch((error) => console.error(error));
     },
   },
   modules: {},
