@@ -1,11 +1,19 @@
 <template>
-  <router-link :to="linkDestination">
+  <!-- Renders an icon as either a link or a button depending on its functionality -->
+  <router-link v-if="linkDestination" :to="linkDestination">
     <img
       :src="require(`../assets/${icon}`)"
       :alt="iconAlt"
       :class="iconClass"
     />
   </router-link>
+  <span v-else :style="{ cursor: 'pointer' }">
+    <img
+      :src="require(`../assets/${icon}`)"
+      :alt="iconAlt"
+      :class="iconClass"
+    />
+  </span>
 </template>
 
 <script>
