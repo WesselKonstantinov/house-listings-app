@@ -26,6 +26,7 @@
         @click="onChangeHouseListingDetailRoute(houseListing)"
       />
     </article>
+    <confirm-delete v-show="isConfirmDeleteModalVisible" />
   </div>
 </template>
 
@@ -123,6 +124,7 @@ import SortButtonToolbar from "../components/SortButtonToolbar.vue";
 import HouseListingCard from "../components/HouseListingCard.vue";
 import NoResultsFound from "../components/NoResultsFound.vue";
 import SearchBar from "../components/SearchBar.vue";
+import ConfirmDelete from "../components/ConfirmDelete.vue";
 
 export default {
   components: {
@@ -130,6 +132,7 @@ export default {
     SearchBar,
     NoResultsFound,
     SortButtonToolbar,
+    ConfirmDelete,
   },
   name: "Home",
   data() {
@@ -139,7 +142,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["isFetching", "houseListings"]),
+    ...mapState(["isFetching", "houseListings", "isConfirmDeleteModalVisible"]),
     sortedHouseListings() {
       return this.houseListings
         .filter(

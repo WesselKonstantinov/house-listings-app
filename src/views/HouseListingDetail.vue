@@ -15,8 +15,9 @@
       <icon-button-link
         icon="ic_delete_white.png"
         icon-alt="Delete icon"
-        link-destination="/"
+        link-destination=""
         class="action-icon-delete"
+        @click="showConfirmDeleteModal"
       />
     </div>
     <go-back-label
@@ -50,8 +51,9 @@
                 <icon-button-link
                   icon="ic_delete.png"
                   icon-alt="Delete icon"
-                  link-destination="/"
+                  link-destination=""
                   class="action-icon-delete"
+                  @click="showConfirmDeleteModal"
                 />
               </div>
             </div>
@@ -132,6 +134,7 @@
             <p>{{ selectedHouseListing.description }}</p>
           </div>
         </article>
+        <confirm-delete v-show="isConfirmDeleteModalVisible" />
       </div>
       <recommended-house-listings-section />
     </div>
@@ -198,6 +201,7 @@
 .house-listing-details__street {
   font-size: 18px;
   margin: 0;
+  color: #000000;
 }
 
 .house-listing-details__actions {
@@ -288,19 +292,22 @@
 </style>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import { mapGetters, mapMutations, mapState } from "vuex";
 import IconButtonLink from "../components/IconButtonLink.vue";
 import GoBackLabel from "../components/GoBackLabel.vue";
 import RecommendedHouseListingsSection from "../components/RecommendedHouseListingsSection.vue";
+import ConfirmDelete from "../components/ConfirmDelete.vue";
 
 export default {
   components: {
     IconButtonLink,
     GoBackLabel,
     RecommendedHouseListingsSection,
+    ConfirmDelete,
   },
   name: "HouseListingDetail",
   computed: {
+    ...mapState(["isConfirmDeleteModalVisible"]),
     ...mapGetters(["selectedHouseListing"]),
     formattedPrice() {
       return new Intl.NumberFormat().format(this.selectedHouseListing.price);
@@ -313,7 +320,13 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(["setSelectedHouseListing"]),
+    ...mapMutations([
+      "setSelectedHouseListing",
+      "setIsConfirmDeleteModalVisible",
+    ]),
+    showConfirmDeleteModal() {
+      this.setIsConfirmDeleteModalVisible(true);
+    },
   },
   created() {
     /* Route params id needs to be a number instead of a string

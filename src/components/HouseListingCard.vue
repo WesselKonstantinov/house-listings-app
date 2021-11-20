@@ -32,8 +32,9 @@
         class="card__actions-link"
         icon="ic_delete.png"
         icon-alt="Delete icon"
-        link-destination="/"
+        link-destination=""
         icon-class="card__actions-icon"
+        @click="showConfirmDeleteModal"
       />
     </div>
   </article>
@@ -127,6 +128,7 @@
 </style>
 
 <script>
+import { mapMutations } from "vuex";
 import IconButtonLink from "./IconButtonLink.vue";
 
 export default {
@@ -144,6 +146,16 @@ export default {
     },
     zipCodeAndCity() {
       return `${this.houseListing.location.zip} ${this.houseListing.location.city}`;
+    },
+  },
+  methods: {
+    ...mapMutations([
+      "setIsConfirmDeleteModalVisible",
+      "setSelectedHouseListing",
+    ]),
+    showConfirmDeleteModal() {
+      this.setIsConfirmDeleteModalVisible(true);
+      this.setSelectedHouseListing(this.houseListing.id);
     },
   },
 };
