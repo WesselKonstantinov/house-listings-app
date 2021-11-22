@@ -60,12 +60,43 @@
       <label for="house-listing-picture" class="form__label"
         >Upload picture (PNG or JPG)</label
       >
-      <input
-        type="file"
-        name="house-listing-picture"
-        id="house-listing-picture"
-        accept="image/png, image/jpg"
-      />
+      <div class="picture-input" @click="selectImage">
+        <div
+          class="picture-input__preview-container"
+          :class="{
+            'picture-input__preview-container--bordered': !form.isImageSelected,
+          }"
+        >
+          <img
+            v-if="form.imageUrl"
+            :src="form.imageUrl"
+            class="picture-input__preview"
+          />
+          <icon-button-link
+            v-if="!form.isImageSelected"
+            icon="ic_upload.png"
+            icon-alt="Upload icon"
+            link-destination=""
+          />
+          <icon-button-link
+            v-if="form.isImageSelected"
+            icon="ic_clear_white.png"
+            icon-alt="Clear icon"
+            link-destination=""
+            class="picture-input__clear"
+            @click.stop="clearImage"
+          />
+        </div>
+        <input
+          type="file"
+          name="house-listing-picture"
+          id="house-listing-picture"
+          accept="image/jpeg,image/png"
+          class="picture-input__input"
+          ref="fileInput"
+          @change="handleImage"
+        />
+      </div>
     </div>
     <div class="form__group">
       <label for="price" class="form__label">Price</label>
@@ -91,16 +122,18 @@
     </div>
     <div class="form__group">
       <label for="has-garage" class="form__label">Garage</label>
-      <select
-        class="form__select"
-        name="has-garage"
-        id="has-garage"
-        v-model="form.garage"
-      >
-        <option value="">Select</option>
-        <option value="yes">Yes</option>
-        <option value="no">No</option>
-      </select>
+      <div class="form__select-wrapper">
+        <select
+          class="form__select"
+          name="has-garage"
+          id="has-garage"
+          v-model="form.garage"
+        >
+          <option value="">Select</option>
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+        </select>
+      </div>
     </div>
     <div class="form__group">
       <label for="bedrooms" class="form__label">Bedrooms</label>
@@ -165,7 +198,7 @@
     "house-number addition"
     "postal-code postal-code"
     "city city"
-    "picture-upload ."
+    "picture-upload picture-upload"
     "price price"
     "size garage"
     "bedrooms bathrooms"
@@ -251,6 +284,34 @@
   width: 100%;
 }
 
+.form__select {
+  appearance: none;
+}
+
+.form__select-wrapper {
+  position: relative;
+}
+
+.form__select-wrapper::before,
+.form__select-wrapper::after {
+  content: "";
+  border: solid #c3c3c3;
+  border-width: 0 2px 2px 0;
+  padding: 3px;
+  position: absolute;
+  top: 50%;
+  right: 10px;
+}
+
+.form__select-wrapper::before {
+  transform: rotate(-135deg);
+  margin-top: -7px;
+}
+
+.form__select-wrapper::after {
+  transform: rotate(45deg);
+}
+
 .form__textarea {
   resize: none;
 }
@@ -262,6 +323,40 @@
   text-transform: uppercase;
 }
 
+.picture-input {
+  width: 150px;
+}
+
+.picture-input__preview-container {
+  border-radius: 10px;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.picture-input__preview-container--bordered {
+  border: 3px dashed #c3c3c3;
+}
+
+.picture-input__preview {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+}
+
+.picture-input__clear {
+  z-index: 10;
+  position: absolute;
+  top: -10px;
+  right: -15px;
+}
+
+.picture-input__input {
+  display: none;
+}
+
 @media screen and (min-width: 768px) {
   .form {
     font-size: 14px;
@@ -270,8 +365,11 @@
 </style>
 
 <script>
+import IconButtonLink from "./IconButtonLink.vue";
+
 export default {
   name: "HouseListingForm",
+  components: { IconButtonLink },
   data() {
     return {
       form: {
@@ -287,8 +385,27 @@ export default {
         bathrooms: "",
         constructionDate: "",
         description: "",
+        isImageSelected: false,
+        imageUrl: null,
       },
     };
+  },
+  methods: {
+    selectImage() {
+      this.$refs.fileInput.click();
+    },
+    handleImage(e) {
+      const files = e.target.files;
+      if (files.length === 0) {
+        return;
+      }
+      this.form.isImageSelected = true;
+      this.form.imageUrl = URL.createObjectURL(files[0]);
+    },
+    clearImage() {
+      this.form.isImageSelected = false;
+      this.form.imageUrl = null;
+    },
   },
 };
 </script>
