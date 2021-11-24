@@ -1,6 +1,6 @@
 <template>
   <h2>House listing form</h2>
-  <form class="form">
+  <form class="form" enctype="multipart/form-data">
     <div class="form__group">
       <label for="street-name" class="form__label">Street name</label>
       <input
@@ -24,25 +24,27 @@
       />
     </div>
     <div class="form__group">
-      <label for="addition" class="form__label">Addition (optional)</label>
+      <label for="number-addition" class="form__label"
+        >Addition (optional)</label
+      >
       <input
         type="text"
-        name="addition"
-        id="addition"
+        name="number-addition"
+        id="number-addition"
         placeholder="e.g. A"
         class="form__input"
-        v-model="form.addition"
+        v-model="form.numberAddition"
       />
     </div>
     <div class="form__group">
-      <label for="postal-code" class="form__label">Postal code</label>
+      <label for="zip" class="form__label">Postal code</label>
       <input
         type="text"
-        name="postal-code"
-        id="postal-code"
+        name="zip"
+        id="zip"
         placeholder="e.g. 1000AA"
         class="form__input"
-        v-model="form.postalCode"
+        v-model="form.zip"
       />
     </div>
     <div class="form__group">
@@ -57,29 +59,23 @@
       />
     </div>
     <div class="form__group">
-      <label for="house-listing-picture" class="form__label"
-        >Upload picture (PNG or JPG)</label
-      >
+      <label for="image" class="form__label">Upload picture (PNG or JPG)</label>
       <div class="picture-input" @click="selectImage">
         <div
           class="picture-input__preview-container"
           :class="{
-            'picture-input__preview-container--bordered': !form.isImageSelected,
+            'picture-input__preview-container--bordered': !isImageSelected,
           }"
         >
-          <img
-            v-if="form.imageUrl"
-            :src="form.imageUrl"
-            class="picture-input__preview"
-          />
+          <img v-if="imageUrl" :src="imageUrl" class="picture-input__preview" />
           <icon-button-link
-            v-if="!form.isImageSelected"
+            v-if="!isImageSelected"
             icon="ic_upload.png"
             icon-alt="Upload icon"
             link-destination=""
           />
           <icon-button-link
-            v-if="form.isImageSelected"
+            v-if="isImageSelected"
             icon="ic_clear_white.png"
             icon-alt="Clear icon"
             link-destination=""
@@ -89,8 +85,8 @@
         </div>
         <input
           type="file"
-          name="house-listing-picture"
-          id="house-listing-picture"
+          name="image"
+          id="image"
           accept="image/jpeg,image/png"
           class="picture-input__input"
           ref="fileInput"
@@ -127,7 +123,7 @@
           class="form__select"
           name="has-garage"
           id="has-garage"
-          v-model="form.garage"
+          v-model="form.hasGarage"
         >
           <option value="">Select</option>
           <option value="yes">Yes</option>
@@ -158,16 +154,16 @@
       />
     </div>
     <div class="form__group">
-      <label for="construction-date" class="form__label"
+      <label for="construction-year" class="form__label"
         >Construction date</label
       >
       <input
         type="text"
-        name="construction-date"
-        id="construction-date"
+        name="construction-year"
+        id="construction-year"
         placeholder="e.g. 1990"
         class="form__input"
-        v-model="form.constructionDate"
+        v-model="form.constructionYear"
       />
     </div>
     <div class="form__group">
@@ -181,7 +177,9 @@
       ></textarea>
     </div>
     <div class="form__group">
-      <button type="submit" class="form__submit">Post</button>
+      <button type="submit" class="form__submit" @click.prevent="onSubmit">
+        Post
+      </button>
     </div>
   </form>
 </template>
@@ -321,6 +319,7 @@
   color: #fff;
   font-weight: bold;
   text-transform: uppercase;
+  cursor: pointer;
 }
 
 .picture-input {
@@ -365,6 +364,7 @@
 </style>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
 import IconButtonLink from "./IconButtonLink.vue";
 
 export default {
@@ -375,22 +375,30 @@ export default {
       form: {
         streetName: "",
         houseNumber: "",
-        addition: "",
-        postalCode: "",
+        numberAddition: "",
+        zip: "",
         city: "",
         price: "",
         size: "",
-        garage: "",
+        hasGarage: "",
         bedrooms: "",
         bathrooms: "",
-        constructionDate: "",
+        constructionYear: "",
         description: "",
-        isImageSelected: false,
-        imageUrl: null,
+        image: null,
       },
+      isImageSelected: false,
+      imageUrl: null,
     };
   },
+  computed: {
+    ...mapGetters(["selectedHouseListing"]),
+  },
   methods: {
+    ...mapActions(["createHouseListing"]),
+    onSubmit() {
+      this.createHouseListing(this.form);
+    },
     selectImage() {
       this.$refs.fileInput.click();
     },
@@ -399,12 +407,14 @@ export default {
       if (files.length === 0) {
         return;
       }
-      this.form.isImageSelected = true;
-      this.form.imageUrl = URL.createObjectURL(files[0]);
+      this.isImageSelected = true;
+      this.imageUrl = URL.createObjectURL(files[0]);
+      this.form.image = files[0];
     },
     clearImage() {
-      this.form.isImageSelected = false;
-      this.form.imageUrl = null;
+      this.isImageSelected = false;
+      this.imageUrl = null;
+      this.form.image = null;
     },
   },
 };

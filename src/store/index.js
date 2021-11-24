@@ -1,4 +1,5 @@
 import axios from "axios";
+import router from "../router/index";
 import { createStore } from "vuex";
 
 export default createStore({
@@ -21,7 +22,10 @@ export default createStore({
     setIsConfirmDeleteModalVisible(state, bool) {
       state.isConfirmDeleteModalVisible = bool;
     },
-    setUpdatedHouseListings(state, id) {
+    newHouseListing(state, { houseListing }) {
+      state.houseListings.unshift(houseListing);
+    },
+    removeHouseListing(state, id) {
       state.houseListings = state.houseListings.filter(
         (houseListing) => houseListing.id !== id
       );
@@ -33,14 +37,17 @@ export default createStore({
         (houseListing) => houseListing.id === state.selectedHouseListingId
       ),
     recommendedHouseListingsByLocation: (state, getters) =>
-      state.houseListings
-        .filter(
-          (houseListing) =>
-            houseListing.location.city ===
-              getters.selectedHouseListing.location.city &&
-            houseListing.id !== getters.selectedHouseListing.id
-        )
-        .slice(0, 3),
+      getters.selectedHouseListing
+        ? state.houseListings
+            .filter(
+              (houseListing) =>
+                !houseListing.madeByMe &&
+                houseListing.id !== getters.selectedHouseListing.id &&
+                houseListing.location.city ===
+                  getters.selectedHouseListing.location.city
+            )
+            .slice(0, 3)
+        : [],
   },
   actions: {
     getHouseListings({ commit }) {
@@ -60,6 +67,40 @@ export default createStore({
           console.error(error);
         });
     },
+    createHouseListing({ dispatch, commit }, submittedData) {
+      axios
+        .post(process.env.VUE_APP_API_URL, submittedData, {
+          headers: {
+            "X-Api-Key": process.env.VUE_APP_API_KEY,
+          },
+        })
+        .then((response) => {
+          commit("newHouseListing", { houseListing: response.data });
+          commit("setSelectedHouseListing", response.data.id);
+          return response.data.id;
+        })
+        .then((id) => {
+          router.push({
+            name: "HouseListingDetail",
+            params: { id },
+          });
+          const { image } = submittedData;
+          const imageFormData = new FormData();
+          imageFormData.append("image", image, image.name);
+          return axios.post(
+            `${process.env.VUE_APP_API_URL}/${id}/upload`,
+            imageFormData,
+            {
+              headers: {
+                "X-Api-Key": process.env.VUE_APP_API_KEY,
+              },
+            }
+          );
+        })
+        // Gets latest data (including a link to the image) for correct display in detail page
+        .then(() => dispatch("getHouseListings"))
+        .catch((error) => console.error(error));
+    },
     deleteHouseListing({ commit }, houseListingId) {
       axios
         .delete(`${process.env.VUE_APP_API_URL}/${houseListingId}`, {
@@ -68,8 +109,8 @@ export default createStore({
           },
         })
         .then(() => {
-          commit("setUpdatedHouseListings", houseListingId);
-          commit("setIsConfirmDeleteModalVisible");
+          commit("removeHouseListing", houseListingId);
+          commit("setIsConfirmDeleteModalVisible", false);
         })
         .catch((error) => console.error(error));
     },
