@@ -334,6 +334,138 @@
   </form>
 </template>
 
+<script>
+import {
+  required,
+  requiredIf,
+  helpers,
+  alpha,
+  alphaNum,
+  numeric,
+} from "@vuelidate/validators";
+import useVuelidate from "@vuelidate/core";
+import { mapActions } from "vuex";
+import IconButtonLink from "./IconButtonLink.vue";
+
+const mustHaveCorrectType = (image) =>
+  !helpers.req(image) ||
+  image.type === "image/png" ||
+  image.type === "image/jpeg";
+
+export default {
+  name: "HouseListingForm",
+  components: { IconButtonLink },
+  setup() {
+    return { v$: useVuelidate() };
+  },
+  data() {
+    return {
+      form: {
+        streetName: "",
+        houseNumber: "",
+        numberAddition: "",
+        zip: "",
+        city: "",
+        price: "",
+        size: "",
+        hasGarage: "",
+        bedrooms: "",
+        bathrooms: "",
+        constructionYear: "",
+        description: "",
+        image: null,
+      },
+      isImageSelected: false,
+      imageUrl: null,
+    };
+  },
+  validations() {
+    return {
+      form: {
+        streetName: {
+          required: helpers.withMessage("Required field missing", required),
+          alphaNum,
+        },
+        houseNumber: {
+          required: helpers.withMessage("Required field missing", required),
+          numeric,
+        },
+        numberAddition: { alphaNum },
+        zip: {
+          required: helpers.withMessage("Required field missing", required),
+          alphaNum,
+        },
+        city: {
+          required: helpers.withMessage("Required field missing", required),
+          alpha,
+        },
+        price: {
+          required: helpers.withMessage("Required field missing", required),
+          numeric,
+        },
+        size: {
+          required: helpers.withMessage("Required field missing", required),
+          numeric,
+        },
+        hasGarage: {
+          required: helpers.withMessage("Required field missing", required),
+        },
+        bedrooms: {
+          required: helpers.withMessage("Required field missing", required),
+          numeric,
+        },
+        bathrooms: {
+          required: helpers.withMessage("Required field missing", required),
+          numeric,
+        },
+        constructionYear: {
+          required: helpers.withMessage("Required field missing", required),
+          numeric,
+        },
+        description: {
+          required: helpers.withMessage("Required field missing", required),
+        },
+        image: {
+          required: helpers.withMessage(
+            "Required image missing",
+            requiredIf(!this.form.image)
+          ),
+          mustHaveCorrectType: helpers.withMessage(
+            "Image must be either PNG or JPG",
+            mustHaveCorrectType
+          ),
+        },
+      },
+    };
+  },
+  methods: {
+    ...mapActions(["createHouseListing"]),
+    async submitForm() {
+      const isFormCorrect = await this.v$.$validate();
+      if (!isFormCorrect) return;
+      this.createHouseListing(this.form);
+    },
+    selectImage() {
+      this.$refs.fileInput.click();
+    },
+    handleImage(e) {
+      const files = e.target.files;
+      if (files.length === 0) {
+        return;
+      }
+      this.isImageSelected = true;
+      this.imageUrl = URL.createObjectURL(files[0]);
+      this.form.image = files[0];
+    },
+    clearImage() {
+      this.isImageSelected = false;
+      this.imageUrl = null;
+      this.form.image = null;
+    },
+  },
+};
+</script>
+
 <style>
 .form {
   font-size: 12px;
@@ -550,135 +682,3 @@
   }
 }
 </style>
-
-<script>
-import {
-  required,
-  requiredIf,
-  helpers,
-  alpha,
-  alphaNum,
-  numeric,
-} from "@vuelidate/validators";
-import useVuelidate from "@vuelidate/core";
-import { mapActions } from "vuex";
-import IconButtonLink from "./IconButtonLink.vue";
-
-const mustHaveCorrectType = (image) =>
-  !helpers.req(image) ||
-  image.type === "image/png" ||
-  image.type === "image/jpeg";
-
-export default {
-  name: "HouseListingForm",
-  components: { IconButtonLink },
-  setup() {
-    return { v$: useVuelidate() };
-  },
-  data() {
-    return {
-      form: {
-        streetName: "",
-        houseNumber: "",
-        numberAddition: "",
-        zip: "",
-        city: "",
-        price: "",
-        size: "",
-        hasGarage: "",
-        bedrooms: "",
-        bathrooms: "",
-        constructionYear: "",
-        description: "",
-        image: null,
-      },
-      isImageSelected: false,
-      imageUrl: null,
-    };
-  },
-  validations() {
-    return {
-      form: {
-        streetName: {
-          required: helpers.withMessage("Required field missing", required),
-          alphaNum,
-        },
-        houseNumber: {
-          required: helpers.withMessage("Required field missing", required),
-          numeric,
-        },
-        numberAddition: { alphaNum },
-        zip: {
-          required: helpers.withMessage("Required field missing", required),
-          alphaNum,
-        },
-        city: {
-          required: helpers.withMessage("Required field missing", required),
-          alpha,
-        },
-        price: {
-          required: helpers.withMessage("Required field missing", required),
-          numeric,
-        },
-        size: {
-          required: helpers.withMessage("Required field missing", required),
-          numeric,
-        },
-        hasGarage: {
-          required: helpers.withMessage("Required field missing", required),
-        },
-        bedrooms: {
-          required: helpers.withMessage("Required field missing", required),
-          numeric,
-        },
-        bathrooms: {
-          required: helpers.withMessage("Required field missing", required),
-          numeric,
-        },
-        constructionYear: {
-          required: helpers.withMessage("Required field missing", required),
-          numeric,
-        },
-        description: {
-          required: helpers.withMessage("Required field missing", required),
-        },
-        image: {
-          required: helpers.withMessage(
-            "Required image missing",
-            requiredIf(!this.form.image)
-          ),
-          mustHaveCorrectType: helpers.withMessage(
-            "Image must be either PNG or JPG",
-            mustHaveCorrectType
-          ),
-        },
-      },
-    };
-  },
-  methods: {
-    ...mapActions(["createHouseListing"]),
-    async submitForm() {
-      const isFormCorrect = await this.v$.$validate();
-      if (!isFormCorrect) return;
-      this.createHouseListing(this.form);
-    },
-    selectImage() {
-      this.$refs.fileInput.click();
-    },
-    handleImage(e) {
-      const files = e.target.files;
-      if (files.length === 0) {
-        return;
-      }
-      this.isImageSelected = true;
-      this.imageUrl = URL.createObjectURL(files[0]);
-      this.form.image = files[0];
-    },
-    clearImage() {
-      this.isImageSelected = false;
-      this.imageUrl = null;
-      this.form.image = null;
-    },
-  },
-};
-</script>

@@ -40,6 +40,40 @@
   </article>
 </template>
 
+<script>
+import { mapMutations } from "vuex";
+import IconButtonLink from "./IconButtonLink.vue";
+
+export default {
+  name: "HouseListingCard",
+  components: { IconButtonLink },
+  props: {
+    houseListing: { required: true, type: Object },
+  },
+  computed: {
+    formattedPrice() {
+      const formattedPrice = new Intl.NumberFormat().format(
+        this.houseListing.price
+      );
+      return `€ ${formattedPrice}`;
+    },
+    zipCodeAndCity() {
+      return `${this.houseListing.location.zip} ${this.houseListing.location.city}`;
+    },
+  },
+  methods: {
+    ...mapMutations([
+      "setIsConfirmDeleteModalVisible",
+      "setSelectedHouseListing",
+    ]),
+    showConfirmDeleteModal() {
+      this.setIsConfirmDeleteModalVisible(true);
+      this.setSelectedHouseListing(this.houseListing.id);
+    },
+  },
+};
+</script>
+
 <style>
 .card {
   background-color: #ffffff;
@@ -126,37 +160,3 @@
   }
 }
 </style>
-
-<script>
-import { mapMutations } from "vuex";
-import IconButtonLink from "./IconButtonLink.vue";
-
-export default {
-  name: "HouseListingCard",
-  components: { IconButtonLink },
-  props: {
-    houseListing: { required: true, type: Object },
-  },
-  computed: {
-    formattedPrice() {
-      const formattedPrice = new Intl.NumberFormat().format(
-        this.houseListing.price
-      );
-      return `€ ${formattedPrice}`;
-    },
-    zipCodeAndCity() {
-      return `${this.houseListing.location.zip} ${this.houseListing.location.city}`;
-    },
-  },
-  methods: {
-    ...mapMutations([
-      "setIsConfirmDeleteModalVisible",
-      "setSelectedHouseListing",
-    ]),
-    showConfirmDeleteModal() {
-      this.setIsConfirmDeleteModalVisible(true);
-      this.setSelectedHouseListing(this.houseListing.id);
-    },
-  },
-};
-</script>

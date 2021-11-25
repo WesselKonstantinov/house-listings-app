@@ -18,6 +18,12 @@
   </header>
 </template>
 
+<script>
+export default {
+  name: "NavigationHeader",
+};
+</script>
+
 <style scoped>
 .header {
   background-color: #ffffff;
@@ -62,9 +68,3 @@
   }
 }
 </style>
-
-<script>
-export default {
-  name: "NavigationHeader",
-};
-</script>

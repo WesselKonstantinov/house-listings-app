@@ -6,6 +6,26 @@
   </main>
 </template>
 
+<script>
+import { mapActions } from "vuex";
+import NavigationHeader from "./components/NavigationHeader.vue";
+import MobileNavigationBar from "./components/MobileNavigationBar.vue";
+
+export default {
+  name: "App",
+  components: {
+    NavigationHeader,
+    MobileNavigationBar,
+  },
+  methods: {
+    ...mapActions(["getHouseListings"]),
+  },
+  created() {
+    this.getHouseListings();
+  },
+};
+</script>
+
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,500;0,600;0,700;1,500&family=Open+Sans:wght@400;600&display=swap");
 
@@ -42,23 +62,3 @@ a:not([href^="https"]) {
   }
 }
 </style>
-
-<script>
-import { mapActions } from "vuex";
-import NavigationHeader from "./components/NavigationHeader.vue";
-import MobileNavigationBar from "./components/MobileNavigationBar.vue";
-
-export default {
-  name: "App",
-  components: {
-    NavigationHeader,
-    MobileNavigationBar,
-  },
-  methods: {
-    ...mapActions(["getHouseListings"]),
-  },
-  created() {
-    this.getHouseListings();
-  },
-};
-</script>

@@ -19,6 +19,22 @@
   </nav>
 </template>
 
+<script>
+import IconButtonLink from "./IconButtonLink.vue";
+
+export default {
+  name: "MobileNavigationBar",
+  components: { IconButtonLink },
+  methods: {
+    getCurrentIcon(routeName, iconName) {
+      return this.$route.name === routeName
+        ? `ic_mobile_navigarion_${iconName}_active.png`
+        : `ic_mobile_navigarion_${iconName}.png`;
+    },
+  },
+};
+</script>
+
 <style scoped>
 .nav {
   width: 100%;
@@ -43,19 +59,3 @@
   }
 }
 </style>
-
-<script>
-import IconButtonLink from "./IconButtonLink.vue";
-
-export default {
-  name: "MobileNavigationBar",
-  components: { IconButtonLink },
-  methods: {
-    getCurrentIcon(routeName, iconName) {
-      return this.$route.name === routeName
-        ? `ic_mobile_navigarion_${iconName}_active.png`
-        : `ic_mobile_navigarion_${iconName}.png`;
-    },
-  },
-};
-</script>

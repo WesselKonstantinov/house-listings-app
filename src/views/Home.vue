@@ -30,6 +30,62 @@
   </div>
 </template>
 
+<script>
+import { mapState } from "vuex";
+import SortButtonToolbar from "../components/SortButtonToolbar.vue";
+import HouseListingCard from "../components/HouseListingCard.vue";
+import NoResultsFound from "../components/NoResultsFound.vue";
+import SearchBar from "../components/SearchBar.vue";
+import ConfirmDelete from "../components/ConfirmDelete.vue";
+
+export default {
+  components: {
+    HouseListingCard,
+    SearchBar,
+    NoResultsFound,
+    SortButtonToolbar,
+    ConfirmDelete,
+  },
+  name: "Home",
+  data() {
+    return {
+      searchTerm: "",
+      sortOption: "price",
+    };
+  },
+  computed: {
+    ...mapState(["isFetching", "houseListings", "isConfirmDeleteModalVisible"]),
+    sortedHouseListings() {
+      return this.houseListings
+        .filter(
+          (houseListing) =>
+            houseListing.location.street
+              .toLowerCase()
+              .includes(this.searchTerm.toLowerCase()) ||
+            houseListing.location.city
+              .toLowerCase()
+              .includes(this.searchTerm.toLowerCase())
+        )
+        .sort((a, b) => a[this.sortOption] - b[this.sortOption]);
+    },
+    sortedHouseListingsCount() {
+      return this.sortedHouseListings.length;
+    },
+  },
+  methods: {
+    onChangeSortOption(newSortOption) {
+      this.sortOption = newSortOption;
+    },
+    onChangeHouseListingDetailRoute(houseListing) {
+      this.$router.push({
+        name: "HouseListingDetail",
+        params: { id: houseListing.id },
+      });
+    },
+  },
+};
+</script>
+
 <style>
 .home-page__mobile-header {
   text-align: center;
@@ -117,59 +173,3 @@
   }
 }
 </style>
-
-<script>
-import { mapState } from "vuex";
-import SortButtonToolbar from "../components/SortButtonToolbar.vue";
-import HouseListingCard from "../components/HouseListingCard.vue";
-import NoResultsFound from "../components/NoResultsFound.vue";
-import SearchBar from "../components/SearchBar.vue";
-import ConfirmDelete from "../components/ConfirmDelete.vue";
-
-export default {
-  components: {
-    HouseListingCard,
-    SearchBar,
-    NoResultsFound,
-    SortButtonToolbar,
-    ConfirmDelete,
-  },
-  name: "Home",
-  data() {
-    return {
-      searchTerm: "",
-      sortOption: "price",
-    };
-  },
-  computed: {
-    ...mapState(["isFetching", "houseListings", "isConfirmDeleteModalVisible"]),
-    sortedHouseListings() {
-      return this.houseListings
-        .filter(
-          (houseListing) =>
-            houseListing.location.street
-              .toLowerCase()
-              .includes(this.searchTerm.toLowerCase()) ||
-            houseListing.location.city
-              .toLowerCase()
-              .includes(this.searchTerm.toLowerCase())
-        )
-        .sort((a, b) => a[this.sortOption] - b[this.sortOption]);
-    },
-    sortedHouseListingsCount() {
-      return this.sortedHouseListings.length;
-    },
-  },
-  methods: {
-    onChangeSortOption(newSortOption) {
-      this.sortOption = newSortOption;
-    },
-    onChangeHouseListingDetailRoute(houseListing) {
-      this.$router.push({
-        name: "HouseListingDetail",
-        params: { id: houseListing.id },
-      });
-    },
-  },
-};
-</script>

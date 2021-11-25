@@ -20,6 +20,29 @@
   </div>
 </template>
 
+<script>
+import { mapActions, mapMutations, mapState } from "vuex";
+
+export default {
+  name: "ConfirmDelete",
+  computed: {
+    ...mapState(["selectedHouseListingId"]),
+  },
+  methods: {
+    ...mapActions(["deleteHouseListing"]),
+    ...mapMutations(["setIsConfirmDeleteModalVisible"]),
+    closeConfirmDeleteModal() {
+      this.setIsConfirmDeleteModalVisible(false);
+    },
+    deleteAndRedirect() {
+      this.deleteHouseListing(this.selectedHouseListingId).then(() =>
+        this.$router.push({ name: "Home" })
+      );
+    },
+  },
+};
+</script>
+
 <style>
 .modal__backdrop {
   position: fixed;
@@ -87,26 +110,3 @@
   }
 }
 </style>
-
-<script>
-import { mapActions, mapMutations, mapState } from "vuex";
-
-export default {
-  name: "ConfirmDelete",
-  computed: {
-    ...mapState(["selectedHouseListingId"]),
-  },
-  methods: {
-    ...mapActions(["deleteHouseListing"]),
-    ...mapMutations(["setIsConfirmDeleteModalVisible"]),
-    closeConfirmDeleteModal() {
-      this.setIsConfirmDeleteModalVisible(false);
-    },
-    deleteAndRedirect() {
-      this.deleteHouseListing(this.selectedHouseListingId).then(() =>
-        this.$router.push({ name: "Home" })
-      );
-    },
-  },
-};
-</script>

@@ -21,6 +21,41 @@
   </div>
 </template>
 
+<script>
+export default {
+  name: "SearchBar",
+  props: {
+    modelValue: String,
+  },
+  emits: ["update:modelValue"],
+  methods: {
+    handleSearch(e) {
+      if (
+        e.target.value &&
+        !e.target.nextSibling.classList.contains("search-bar__clear--visible")
+      ) {
+        e.target.nextSibling.classList.replace(
+          "search-bar__clear--hidden",
+          "search-bar__clear--visible"
+        );
+      } else if (!e.target.value) {
+        e.target.nextSibling.classList.replace(
+          "search-bar__clear--visible",
+          "search-bar__clear--hidden"
+        );
+      }
+    },
+    handleReset(e) {
+      this.$emit("update:modelValue", "");
+      e.target.classList.replace(
+        "search-bar__clear--visible",
+        "search-bar__clear--hidden"
+      );
+    },
+  },
+};
+</script>
+
 <style scoped>
 .search-bar {
   position: relative;
@@ -90,38 +125,3 @@
   }
 }
 </style>
-
-<script>
-export default {
-  name: "SearchBar",
-  props: {
-    modelValue: String,
-  },
-  emits: ["update:modelValue"],
-  methods: {
-    handleSearch(e) {
-      if (
-        e.target.value &&
-        !e.target.nextSibling.classList.contains("search-bar__clear--visible")
-      ) {
-        e.target.nextSibling.classList.replace(
-          "search-bar__clear--hidden",
-          "search-bar__clear--visible"
-        );
-      } else if (!e.target.value) {
-        e.target.nextSibling.classList.replace(
-          "search-bar__clear--visible",
-          "search-bar__clear--hidden"
-        );
-      }
-    },
-    handleReset(e) {
-      this.$emit("update:modelValue", "");
-      e.target.classList.replace(
-        "search-bar__clear--visible",
-        "search-bar__clear--hidden"
-      );
-    },
-  },
-};
-</script>

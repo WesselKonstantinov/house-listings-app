@@ -9,6 +9,12 @@
   </div>
 </template>
 
+<script>
+export default {
+  name: "NoResultsFound",
+};
+</script>
+
 <style scoped>
 .no-results {
   color: #4a4b4c;
@@ -32,9 +38,3 @@
   }
 }
 </style>
-
-<script>
-export default {
-  name: "NoResultsFound",
-};
-</script>

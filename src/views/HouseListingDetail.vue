@@ -141,6 +141,56 @@
   </div>
 </template>
 
+<script>
+import { mapGetters, mapMutations, mapState } from "vuex";
+import IconButtonLink from "../components/IconButtonLink.vue";
+import GoBackLabel from "../components/GoBackLabel.vue";
+import RecommendedHouseListingsSection from "../components/RecommendedHouseListingsSection.vue";
+import ConfirmDelete from "../components/ConfirmDelete.vue";
+
+export default {
+  components: {
+    IconButtonLink,
+    GoBackLabel,
+    RecommendedHouseListingsSection,
+    ConfirmDelete,
+  },
+  name: "HouseListingDetail",
+  computed: {
+    ...mapState(["isConfirmDeleteModalVisible"]),
+    ...mapGetters(["selectedHouseListing"]),
+    formattedPrice() {
+      return new Intl.NumberFormat().format(this.selectedHouseListing.price);
+    },
+    zipCodeAndCity() {
+      return `${this.selectedHouseListing.location.zip} ${this.selectedHouseListing.location.city}`;
+    },
+    isGaragePresent() {
+      return this.selectedHouseListing.hasGarage ? "Yes" : "No";
+    },
+  },
+  methods: {
+    ...mapMutations([
+      "setSelectedHouseListing",
+      "setIsConfirmDeleteModalVisible",
+    ]),
+    showConfirmDeleteModal() {
+      this.setIsConfirmDeleteModalVisible(true);
+    },
+  },
+  created() {
+    /* Route params id needs to be a number instead of a string
+    for correct matching with the id of a single house listing object. */
+    const houseListingId = Number(this.$route.params.id);
+    this.setSelectedHouseListing(houseListingId);
+  },
+  updated() {
+    const houseListingId = Number(this.$route.params.id);
+    this.setSelectedHouseListing(houseListingId);
+  },
+};
+</script>
+
 <style>
 .house-listing-page {
   /* Give page full width on mobile despite being inside a centered container */
@@ -290,53 +340,3 @@
   }
 }
 </style>
-
-<script>
-import { mapGetters, mapMutations, mapState } from "vuex";
-import IconButtonLink from "../components/IconButtonLink.vue";
-import GoBackLabel from "../components/GoBackLabel.vue";
-import RecommendedHouseListingsSection from "../components/RecommendedHouseListingsSection.vue";
-import ConfirmDelete from "../components/ConfirmDelete.vue";
-
-export default {
-  components: {
-    IconButtonLink,
-    GoBackLabel,
-    RecommendedHouseListingsSection,
-    ConfirmDelete,
-  },
-  name: "HouseListingDetail",
-  computed: {
-    ...mapState(["isConfirmDeleteModalVisible"]),
-    ...mapGetters(["selectedHouseListing"]),
-    formattedPrice() {
-      return new Intl.NumberFormat().format(this.selectedHouseListing.price);
-    },
-    zipCodeAndCity() {
-      return `${this.selectedHouseListing.location.zip} ${this.selectedHouseListing.location.city}`;
-    },
-    isGaragePresent() {
-      return this.selectedHouseListing.hasGarage ? "Yes" : "No";
-    },
-  },
-  methods: {
-    ...mapMutations([
-      "setSelectedHouseListing",
-      "setIsConfirmDeleteModalVisible",
-    ]),
-    showConfirmDeleteModal() {
-      this.setIsConfirmDeleteModalVisible(true);
-    },
-  },
-  created() {
-    /* Route params id needs to be a number instead of a string
-    for correct matching with the id of a single house listing object. */
-    const houseListingId = Number(this.$route.params.id);
-    this.setSelectedHouseListing(houseListingId);
-  },
-  updated() {
-    const houseListingId = Number(this.$route.params.id);
-    this.setSelectedHouseListing(houseListingId);
-  },
-};
-</script>

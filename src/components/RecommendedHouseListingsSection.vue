@@ -10,6 +10,30 @@
   </aside>
 </template>
 
+<script>
+import { mapGetters } from "vuex";
+import HouseListingCard from "./HouseListingCard.vue";
+
+export default {
+  components: { HouseListingCard },
+  name: "RecommendedHouseListingsSection",
+  computed: {
+    ...mapGetters(["recommendedHouseListingsByLocation"]),
+    areRecommendedHouseListingsPresent() {
+      return this.recommendedHouseListingsByLocation.length !== 0;
+    },
+  },
+  methods: {
+    onChangeHouseListingDetailRoute(houseListing) {
+      this.$router.push({
+        name: "HouseListingDetail",
+        params: { id: houseListing.id },
+      });
+    },
+  },
+};
+</script>
+
 <style>
 .recommendations {
   width: 90%;
@@ -38,27 +62,3 @@
   }
 }
 </style>
-
-<script>
-import { mapGetters } from "vuex";
-import HouseListingCard from "./HouseListingCard.vue";
-
-export default {
-  components: { HouseListingCard },
-  name: "RecommendedHouseListingsSection",
-  computed: {
-    ...mapGetters(["recommendedHouseListingsByLocation"]),
-    areRecommendedHouseListingsPresent() {
-      return this.recommendedHouseListingsByLocation.length !== 0;
-    },
-  },
-  methods: {
-    onChangeHouseListingDetailRoute(houseListing) {
-      this.$router.push({
-        name: "HouseListingDetail",
-        params: { id: houseListing.id },
-      });
-    },
-  },
-};
-</script>

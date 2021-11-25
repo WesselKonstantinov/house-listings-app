@@ -30,6 +30,21 @@
   </div>
 </template>
 
+<script>
+export default {
+  name: "SortButtonToolbar",
+  props: {
+    sortOption: String,
+  },
+  emits: ["changeSortOption"],
+  methods: {
+    sortOptionHasActiveClass(selectedSortOption) {
+      return this.sortOption === selectedSortOption ? "button--active" : "";
+    },
+  },
+};
+</script>
+
 <style>
 .button-group {
   border-radius: 5px;
@@ -65,18 +80,3 @@
   }
 }
 </style>
-
-<script>
-export default {
-  name: "SortButtonToolbar",
-  props: {
-    sortOption: String,
-  },
-  emits: ["changeSortOption"],
-  methods: {
-    sortOptionHasActiveClass(selectedSortOption) {
-      return this.sortOption === selectedSortOption ? "button--active" : "";
-    },
-  },
-};
-</script>

@@ -10,29 +10,6 @@
   </div>
 </template>
 
-<style>
-.back-link {
-  display: none;
-}
-
-@media screen and (min-width: 768px) {
-  .back-link {
-    display: flex;
-    margin-bottom: 30px;
-  }
-
-  .back-link__link {
-    position: relative;
-    bottom: 1px;
-  }
-
-  .back-link__text {
-    font-size: 16px;
-    margin: 0 10px;
-  }
-}
-</style>
-
 <script>
 import IconButtonLink from "./IconButtonLink.vue";
 
@@ -59,3 +36,26 @@ export default {
   },
 };
 </script>
+
+<style>
+.back-link {
+  display: none;
+}
+
+@media screen and (min-width: 768px) {
+  .back-link {
+    display: flex;
+    margin-bottom: 30px;
+  }
+
+  .back-link__link {
+    position: relative;
+    bottom: 1px;
+  }
+
+  .back-link__text {
+    font-size: 16px;
+    margin: 0 10px;
+  }
+}
+</style>
