@@ -2,26 +2,50 @@
   <h2>House listing form</h2>
   <form class="form" enctype="multipart/form-data">
     <div class="form__group">
-      <label for="street-name" class="form__label">Street name</label>
+      <label for="street-name" class="form__label form__label--required"
+        >Street name</label
+      >
       <input
         type="text"
         name="street-name"
         id="street-name"
         placeholder="Enter the street name"
         class="form__input form__input--full"
+        :class="{
+          'form__input--error': v$.form.streetName.$error,
+        }"
         v-model="form.streetName"
       />
+      <div
+        v-for="error of v$.form.streetName.$errors"
+        :key="error.$uid"
+        class="form__error-message"
+      >
+        {{ error.$message }}
+      </div>
     </div>
     <div class="form__group">
-      <label for="house-number" class="form__label">House number</label>
+      <label for="house-number" class="form__label form__label--required"
+        >House number</label
+      >
       <input
         type="text"
         name="house-number"
         id="house-number"
         placeholder="Enter house number"
         class="form__input"
+        :class="{
+          'form__input--error': v$.form.houseNumber.$error,
+        }"
         v-model="form.houseNumber"
       />
+      <div
+        v-for="error of v$.form.houseNumber.$errors"
+        :key="error.$uid"
+        class="form__error-message"
+      >
+        {{ error.$message }}
+      </div>
     </div>
     <div class="form__group">
       <label for="number-addition" class="form__label"
@@ -33,38 +57,74 @@
         id="number-addition"
         placeholder="e.g. A"
         class="form__input"
+        :class="{
+          'form__input--error': v$.form.numberAddition.$error,
+        }"
         v-model="form.numberAddition"
       />
+      <div
+        v-for="error of v$.form.numberAddition.$errors"
+        :key="error.$uid"
+        class="form__error-message"
+      >
+        {{ error.$message }}
+      </div>
     </div>
     <div class="form__group">
-      <label for="zip" class="form__label">Postal code</label>
+      <label for="zip" class="form__label form__label--required"
+        >Postal code</label
+      >
       <input
         type="text"
         name="zip"
         id="zip"
-        placeholder="e.g. 1000AA"
+        :placeholder="v$.form.zip.$error ? 'Enter postal code' : 'e.g. 1000AA'"
         class="form__input"
+        :class="{
+          'form__input--error': v$.form.zip.$error,
+        }"
         v-model="form.zip"
       />
+      <div
+        v-for="error of v$.form.zip.$errors"
+        :key="error.$uid"
+        class="form__error-message"
+      >
+        {{ error.$message }}
+      </div>
     </div>
     <div class="form__group">
-      <label for="city" class="form__label">City</label>
+      <label for="city" class="form__label form__label--required">City</label>
       <input
         type="text"
         name="city"
         id="city"
-        placeholder="e.g. Utrecht"
+        :placeholder="v$.form.city.$error ? 'Enter city' : 'e.g. Utrecht'"
         class="form__input"
+        :class="{
+          'form__input--error': v$.form.city.$error,
+        }"
         v-model="form.city"
       />
+      <div
+        v-for="error of v$.form.city.$errors"
+        :key="error.$uid"
+        class="form__error-message"
+      >
+        {{ error.$message }}
+      </div>
     </div>
     <div class="form__group">
-      <label for="image" class="form__label">Upload picture (PNG or JPG)</label>
+      <label for="image" class="form__label form__label--required"
+        >Upload picture (PNG or JPG)</label
+      >
       <div class="picture-input" @click="selectImage">
         <div
           class="picture-input__preview-container"
           :class="{
             'picture-input__preview-container--bordered': !isImageSelected,
+            'picture-input__preview-container--error':
+              v$.form.image.$error && !isImageSelected,
           }"
         >
           <img v-if="imageUrl" :src="imageUrl" class="picture-input__preview" />
@@ -93,36 +153,69 @@
           @change="handleImage"
         />
       </div>
+      <div
+        v-for="error of v$.form.image.$errors"
+        :key="error.$uid"
+        class="form__error-message"
+      >
+        {{ error.$message }}
+      </div>
     </div>
     <div class="form__group">
-      <label for="price" class="form__label">Price</label>
+      <label for="price" class="form__label form__label--required">Price</label>
       <input
         type="text"
         name="price"
         id="price"
-        placeholder="e.g. €150.000"
+        :placeholder="v$.form.price.$error ? 'Enter price' : 'e.g. €150.000'"
         class="form__input"
+        :class="{
+          'form__input--error': v$.form.price.$error,
+        }"
         v-model="form.price"
       />
+      <div
+        v-for="error of v$.form.price.$errors"
+        :key="error.$uid"
+        class="form__error-message"
+      >
+        {{ error.$message }}
+      </div>
     </div>
     <div class="form__group">
-      <label for="size" class="form__label">Size</label>
+      <label for="size" class="form__label form__label--required">Size</label>
       <input
         type="text"
         name="size"
         id="size"
-        placeholder="e.g. 60m2"
+        :placeholder="v$.form.size.$error ? 'Enter size' : 'e.g. 60m2'"
         class="form__input"
+        :class="{
+          'form__input--error': v$.form.size.$error,
+        }"
         v-model="form.size"
       />
+      <div
+        v-for="error of v$.form.size.$errors"
+        :key="error.$uid"
+        class="form__error-message"
+      >
+        {{ error.$message }}
+      </div>
     </div>
     <div class="form__group">
-      <label for="has-garage" class="form__label">Garage</label>
+      <label for="has-garage" class="form__label form__label--required"
+        >Garage</label
+      >
       <div class="form__select-wrapper">
         <select
-          class="form__select"
           name="has-garage"
           id="has-garage"
+          class="form__select"
+          :class="{
+            'form__select--selected': form.hasGarage,
+            'form__select--error': v$.form.hasGarage.$error,
+          }"
           v-model="form.hasGarage"
         >
           <option value="">Select</option>
@@ -130,54 +223,111 @@
           <option value="no">No</option>
         </select>
       </div>
+      <div
+        v-for="error of v$.form.hasGarage.$errors"
+        :key="error.$uid"
+        class="form__error-message"
+      >
+        {{ error.$message }}
+      </div>
     </div>
     <div class="form__group">
-      <label for="bedrooms" class="form__label">Bedrooms</label>
+      <label for="bedrooms" class="form__label form__label--required"
+        >Bedrooms</label
+      >
       <input
         type="text"
         name="bedrooms"
         id="bedrooms"
         placeholder="Enter amount"
         class="form__input"
+        :class="{
+          'form__input--error': v$.form.bedrooms.$error,
+        }"
         v-model="form.bedrooms"
       />
+      <div
+        v-for="error of v$.form.bedrooms.$errors"
+        :key="error.$uid"
+        class="form__error-message"
+      >
+        {{ error.$message }}
+      </div>
     </div>
     <div class="form__group">
-      <label for="bathrooms" class="form__label">Bathrooms</label>
+      <label for="bathrooms" class="form__label form__label--required"
+        >Bathrooms</label
+      >
       <input
         type="text"
         name="bathrooms"
         id="bathrooms"
         placeholder="Enter amount"
         class="form__input"
+        :class="{
+          'form__input--error': v$.form.bathrooms.$error,
+        }"
         v-model="form.bathrooms"
       />
+      <div
+        v-for="error of v$.form.bathrooms.$errors"
+        :key="error.$uid"
+        class="form__error-message"
+      >
+        {{ error.$message }}
+      </div>
     </div>
     <div class="form__group">
-      <label for="construction-year" class="form__label"
+      <label for="construction-year" class="form__label form__label--required"
         >Construction date</label
       >
       <input
         type="text"
         name="construction-year"
         id="construction-year"
-        placeholder="e.g. 1990"
+        :placeholder="
+          v$.form.constructionYear.$error
+            ? 'Enter construction date'
+            : 'e.g. 1990'
+        "
         class="form__input"
+        :class="{
+          'form__input--error': v$.form.constructionYear.$error,
+        }"
         v-model="form.constructionYear"
       />
+      <div
+        v-for="error of v$.form.constructionYear.$errors"
+        :key="error.$uid"
+        class="form__error-message"
+      >
+        {{ error.$message }}
+      </div>
     </div>
     <div class="form__group">
-      <label for="description" class="form__label">Description</label>
+      <label for="description" class="form__label form__label--required"
+        >Description</label
+      >
       <textarea
         placeholder="Enter description"
         name="description"
         id="description"
         class="form__textarea"
+        :class="{
+          'form__textarea--error': v$.form.description.$error,
+        }"
         v-model="form.description"
       ></textarea>
+      <div
+        v-for="error of v$.form.description.$errors"
+        :key="error.$uid"
+        class="form__error-message"
+      >
+        {{ error.$message }}
+      </div>
     </div>
     <div class="form__group">
-      <button type="submit" class="form__submit" @click.prevent="onSubmit">
+      <button type="submit" class="form__submit" @click.prevent="submitForm">
         Post
       </button>
     </div>
@@ -211,6 +361,10 @@
   font-family: "Montserrat", sans-serif;
   font-weight: 600;
   margin-bottom: 8px;
+}
+
+.form__label--required::after {
+  content: "*";
 }
 
 .form__group:nth-of-type(1) {
@@ -280,10 +434,16 @@
   border: 1px solid transparent;
   outline: none;
   width: 100%;
+  color: #000;
 }
 
 .form__select {
   appearance: none;
+  color: #c3c3c3;
+}
+
+.form__select--selected {
+  color: #000;
 }
 
 .form__select-wrapper {
@@ -322,6 +482,30 @@
   cursor: pointer;
 }
 
+.form__error-message {
+  font-family: "Montserrat", sans-serif;
+  font-style: italic;
+  color: red;
+  margin-top: 10px;
+}
+
+.form__input--error,
+.form__select--error,
+.form__textarea--error {
+  border: 1px solid red;
+}
+
+.form__input::placeholder,
+.form__textarea::placeholder {
+  color: #c3c3c3;
+}
+
+.form__input--error::placeholder,
+.form__textarea--error::placeholder,
+.form__select--error {
+  color: red;
+}
+
 .picture-input {
   width: 150px;
 }
@@ -337,6 +521,10 @@
 
 .picture-input__preview-container--bordered {
   border: 3px dashed #c3c3c3;
+}
+
+.picture-input__preview-container--error {
+  border: 3px dashed red;
 }
 
 .picture-input__preview {
@@ -364,12 +552,29 @@
 </style>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import {
+  required,
+  requiredIf,
+  helpers,
+  alpha,
+  alphaNum,
+  numeric,
+} from "@vuelidate/validators";
+import useVuelidate from "@vuelidate/core";
+import { mapActions } from "vuex";
 import IconButtonLink from "./IconButtonLink.vue";
+
+const mustHaveCorrectType = (image) =>
+  !helpers.req(image) ||
+  image.type === "image/png" ||
+  image.type === "image/jpeg";
 
 export default {
   name: "HouseListingForm",
   components: { IconButtonLink },
+  setup() {
+    return { v$: useVuelidate() };
+  },
   data() {
     return {
       form: {
@@ -391,12 +596,70 @@ export default {
       imageUrl: null,
     };
   },
-  computed: {
-    ...mapGetters(["selectedHouseListing"]),
+  validations() {
+    return {
+      form: {
+        streetName: {
+          required: helpers.withMessage("Required field missing", required),
+          alphaNum,
+        },
+        houseNumber: {
+          required: helpers.withMessage("Required field missing", required),
+          numeric,
+        },
+        numberAddition: { alphaNum },
+        zip: {
+          required: helpers.withMessage("Required field missing", required),
+          alphaNum,
+        },
+        city: {
+          required: helpers.withMessage("Required field missing", required),
+          alpha,
+        },
+        price: {
+          required: helpers.withMessage("Required field missing", required),
+          numeric,
+        },
+        size: {
+          required: helpers.withMessage("Required field missing", required),
+          numeric,
+        },
+        hasGarage: {
+          required: helpers.withMessage("Required field missing", required),
+        },
+        bedrooms: {
+          required: helpers.withMessage("Required field missing", required),
+          numeric,
+        },
+        bathrooms: {
+          required: helpers.withMessage("Required field missing", required),
+          numeric,
+        },
+        constructionYear: {
+          required: helpers.withMessage("Required field missing", required),
+          numeric,
+        },
+        description: {
+          required: helpers.withMessage("Required field missing", required),
+        },
+        image: {
+          required: helpers.withMessage(
+            "Required image missing",
+            requiredIf(!this.form.image)
+          ),
+          mustHaveCorrectType: helpers.withMessage(
+            "Image must be either PNG or JPG",
+            mustHaveCorrectType
+          ),
+        },
+      },
+    };
   },
   methods: {
     ...mapActions(["createHouseListing"]),
-    onSubmit() {
+    async submitForm() {
+      const isFormCorrect = await this.v$.$validate();
+      if (!isFormCorrect) return;
       this.createHouseListing(this.form);
     },
     selectImage() {
