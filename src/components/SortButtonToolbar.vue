@@ -2,28 +2,28 @@
   <div class="button-group">
     <button
       class="button"
-      :class="sortOptionHasActiveClass('price')"
+      :class="isSortOptionActive('price')"
       type="button"
       title="Sort by price"
-      @click="$emit('changeSortOption', 'price')"
+      @click="setSortOption('price')"
     >
       Price
     </button>
     <button
       class="button"
-      :class="sortOptionHasActiveClass('size')"
+      :class="isSortOptionActive('size')"
       type="button"
       title="Sort by size"
-      @click="$emit('changeSortOption', 'size')"
+      @click="setSortOption('size')"
     >
       Size
     </button>
     <button
       class="button"
-      :class="sortOptionHasActiveClass('constructionYear')"
+      :class="isSortOptionActive('constructionYear')"
       type="button"
       title="Sort by construction year"
-      @click="$emit('changeSortOption', 'constructionYear')"
+      @click="setSortOption('constructionYear')"
     >
       Year
     </button>
@@ -31,14 +31,16 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from "vuex";
+
 export default {
   name: "SortButtonToolbar",
-  props: {
-    sortOption: String,
+  computed: {
+    ...mapState(["sortOption"]),
   },
-  emits: ["changeSortOption"],
   methods: {
-    sortOptionHasActiveClass(selectedSortOption) {
+    ...mapMutations(["setSortOption"]),
+    isSortOptionActive(selectedSortOption) {
       return this.sortOption === selectedSortOption ? "button--active" : "";
     },
   },
@@ -59,10 +61,12 @@ export default {
   border: none;
   border-radius: 0;
   color: #ffffff;
+  cursor: pointer;
   flex: 1;
   font-size: 12px;
   font-weight: bold;
   padding: 0;
+  margin: 0;
 }
 
 .button--active {

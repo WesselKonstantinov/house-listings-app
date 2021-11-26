@@ -8,49 +8,33 @@
     <input
       class="search-bar__input"
       placeholder="Search for a house"
-      :value="modelValue"
-      @input="$emit('update:modelValue', $event.target.value)"
-      @keyup="handleSearch"
+      :value="searchTerm"
+      @input="setSearchTerm($event.target.value)"
     />
     <img
-      class="search-bar__clear search-bar__clear--hidden"
+      class="search-bar__clear"
+      :class="toggleClearIconClass()"
       alt="Clear icon"
       src="../assets/ic_clear.png"
-      @click="handleReset"
+      @click="setSearchTerm('')"
     />
   </div>
 </template>
 
 <script>
+import { mapState, mapMutations } from "vuex";
+
 export default {
   name: "SearchBar",
-  props: {
-    modelValue: String,
+  computed: {
+    ...mapState(["searchTerm"]),
   },
-  emits: ["update:modelValue"],
   methods: {
-    handleSearch(e) {
-      if (
-        e.target.value &&
-        !e.target.nextSibling.classList.contains("search-bar__clear--visible")
-      ) {
-        e.target.nextSibling.classList.replace(
-          "search-bar__clear--hidden",
-          "search-bar__clear--visible"
-        );
-      } else if (!e.target.value) {
-        e.target.nextSibling.classList.replace(
-          "search-bar__clear--visible",
-          "search-bar__clear--hidden"
-        );
-      }
-    },
-    handleReset(e) {
-      this.$emit("update:modelValue", "");
-      e.target.classList.replace(
-        "search-bar__clear--visible",
-        "search-bar__clear--hidden"
-      );
+    ...mapMutations(["setSearchTerm"]),
+    toggleClearIconClass() {
+      return this.searchTerm
+        ? "search-bar__clear--visible"
+        : "search-bar__clear--hidden";
     },
   },
 };

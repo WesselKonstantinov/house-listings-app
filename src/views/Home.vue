@@ -7,18 +7,11 @@
         <h2>Houses</h2>
       </header>
       <div class="home-page__content-tools">
-        <search-bar v-model="searchTerm" />
-        <sort-button-toolbar
-          :sort-option="sortOption"
-          @change-sort-option="onChangeSortOption"
-        />
+        <search-bar />
+        <sort-button-toolbar />
       </div>
-      <h3 v-if="searchTerm && sortedHouseListingsCount !== 0">
-        {{ sortedHouseListingsCount }} results found
-      </h3>
-      <no-results-found
-        v-else-if="searchTerm && sortedHouseListingsCount === 0"
-      />
+      <h3 v-if="resultsFound">{{ sortedHouseListingsCount }} results found</h3>
+      <no-results-found v-else-if="noResultsFound" />
       <house-listing-card
         v-for="houseListing in sortedHouseListings"
         :key="houseListing.id"
@@ -31,7 +24,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import SortButtonToolbar from "../components/SortButtonToolbar.vue";
 import HouseListingCard from "../components/HouseListingCard.vue";
 import NoResultsFound from "../components/NoResultsFound.vue";
@@ -47,35 +40,17 @@ export default {
     ConfirmDelete,
   },
   name: "Home",
-  data() {
-    return {
-      searchTerm: "",
-      sortOption: "price",
-    };
-  },
   computed: {
-    ...mapState(["isFetching", "houseListings", "isConfirmDeleteModalVisible"]),
-    sortedHouseListings() {
-      return this.houseListings
-        .filter(
-          (houseListing) =>
-            houseListing.location.street
-              .toLowerCase()
-              .includes(this.searchTerm.toLowerCase()) ||
-            houseListing.location.city
-              .toLowerCase()
-              .includes(this.searchTerm.toLowerCase())
-        )
-        .sort((a, b) => a[this.sortOption] - b[this.sortOption]);
+    ...mapState(["isFetching", "searchTerm", "isConfirmDeleteModalVisible"]),
+    ...mapGetters(["sortedHouseListings", "sortedHouseListingsCount"]),
+    resultsFound() {
+      return this.searchTerm && this.sortedHouseListingsCount;
     },
-    sortedHouseListingsCount() {
-      return this.sortedHouseListings.length;
+    noResultsFound() {
+      return this.searchTerm && !this.sortedHouseListingsCount;
     },
   },
   methods: {
-    onChangeSortOption(newSortOption) {
-      this.sortOption = newSortOption;
-    },
     onChangeHouseListingDetailRoute(houseListing) {
       this.$router.push({
         name: "HouseListingDetail",

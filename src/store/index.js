@@ -5,6 +5,8 @@ import { createStore } from "vuex";
 export default createStore({
   state: {
     houseListings: [],
+    searchTerm: "",
+    sortOption: "price",
     selectedHouseListingId: null,
     isFetching: false,
     isConfirmDeleteModalVisible: false,
@@ -12,6 +14,12 @@ export default createStore({
   mutations: {
     setHouseListings(state, { houseListings }) {
       state.houseListings = houseListings;
+    },
+    setSearchTerm(state, searchTerm) {
+      state.searchTerm = searchTerm;
+    },
+    setSortOption(state, sortOption) {
+      state.sortOption = sortOption;
     },
     setSelectedHouseListing(state, id) {
       state.selectedHouseListingId = id;
@@ -32,6 +40,25 @@ export default createStore({
     },
   },
   getters: {
+    sortedHouseListings: (state) =>
+      state.houseListings
+        .filter(
+          (houseListing) =>
+            houseListing.location.street
+              .toLowerCase()
+              .includes(state.searchTerm.toLowerCase()) ||
+            houseListing.location.city
+              .toLowerCase()
+              .includes(state.searchTerm.toLowerCase()) ||
+            houseListing.location.zip
+              .toLowerCase()
+              .includes(state.searchTerm.toLowerCase()) ||
+            houseListing.size === Number(state.searchTerm) ||
+            houseListing.price === Number(state.searchTerm)
+        )
+        .sort((a, b) => a[state.sortOption] - b[state.sortOption]),
+    sortedHouseListingsCount: (state, getters) =>
+      getters.sortedHouseListings.length,
     selectedHouseListing: (state) =>
       state.houseListings.find(
         (houseListing) => houseListing.id === state.selectedHouseListingId
