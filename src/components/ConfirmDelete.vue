@@ -21,13 +21,10 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapState } from "vuex";
+import { mapActions, mapMutations } from "vuex";
 
 export default {
   name: "ConfirmDelete",
-  computed: {
-    ...mapState(["selectedHouseListingId"]),
-  },
   methods: {
     ...mapActions(["deleteHouseListing"]),
     ...mapMutations(["setIsConfirmDeleteModalVisible"]),
@@ -35,9 +32,7 @@ export default {
       this.setIsConfirmDeleteModalVisible(false);
     },
     deleteAndRedirect() {
-      this.deleteHouseListing(this.selectedHouseListingId).then(() =>
-        this.$router.push({ name: "Home" })
-      );
+      this.deleteHouseListing().then(() => this.$router.push({ name: "Home" }));
     },
   },
 };

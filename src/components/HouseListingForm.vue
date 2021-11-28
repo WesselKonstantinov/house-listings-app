@@ -122,23 +122,26 @@
         <div
           class="picture-input__preview-container"
           :class="{
-            'picture-input__preview-container--bordered': !isImageSelected,
+            'picture-input__preview-container--standard': !form.image,
             'picture-input__preview-container--error':
-              v$.form.image.$error && !isImageSelected,
+              v$.form.image.$error &&
+              v$.form.image.$errors[0].$validator === 'required',
           }"
         >
-          <img v-if="imageUrl" :src="imageUrl" class="picture-input__preview" />
-          <icon-button-link
-            v-if="!isImageSelected"
-            icon="ic_upload.png"
-            icon-alt="Upload icon"
-            link-destination=""
+          <img
+            v-if="imagePreviewUrl"
+            :src="imagePreviewUrl"
+            class="picture-input__preview"
           />
           <icon-button-link
-            v-if="isImageSelected"
+            v-if="!form.image"
+            icon="ic_upload.png"
+            icon-alt="Upload icon"
+          />
+          <icon-button-link
+            v-if="form.image"
             icon="ic_clear_white.png"
             icon-alt="Clear icon"
-            link-destination=""
             class="picture-input__clear"
             @click.stop="clearImage"
           />
@@ -328,7 +331,7 @@
     </div>
     <div class="form__group">
       <button type="submit" class="form__submit" @click.prevent="submitForm">
-        Post
+        {{ buttonText }}
       </button>
     </div>
   </form>
@@ -350,33 +353,55 @@ import IconButtonLink from "./IconButtonLink.vue";
 const mustHaveCorrectType = (image) =>
   !helpers.req(image) ||
   image.type === "image/png" ||
-  image.type === "image/jpeg";
+  image.type === "image/jpeg" ||
+  image.endsWith(".png") ||
+  image.endsWith(".jpg") ||
+  image.endsWith(".jpeg");
 
 export default {
   name: "HouseListingForm",
   components: { IconButtonLink },
+  props: {
+    houseListing: {
+      type: Object,
+    },
+  },
+  computed: {
+    isEditing() {
+      return "id" in this.$route.params;
+    },
+    buttonText() {
+      return this.isEditing ? "Save" : "Post";
+    },
+  },
   setup() {
     return { v$: useVuelidate() };
   },
   data() {
     return {
       form: {
-        streetName: "",
-        houseNumber: "",
-        numberAddition: "",
-        zip: "",
-        city: "",
-        price: "",
-        size: "",
-        hasGarage: "",
-        bedrooms: "",
-        bathrooms: "",
-        constructionYear: "",
-        description: "",
-        image: null,
+        streetName: this.getStreetName(this.houseListing?.location) || "",
+        houseNumber: this.getHouseNumber(this.houseListing?.location) || "",
+        numberAddition:
+          this.getNumberAddition(this.houseListing?.location) || "",
+        zip: this.houseListing?.location.zip || "",
+        city: this.houseListing?.location.city || "",
+        price: this.houseListing?.price || "",
+        size: this.houseListing?.size || "",
+        hasGarage: this.houseListing?.hasGarage
+          ? "yes"
+          : /* Strictly check if this.houseListing?.hasGarage is false instead of falsy (i.e. !this.houseListing?.hasGarage),
+          otherwise the select field can never default to the blank option when the form should be empty */
+          this.houseListing?.hasGarage === false
+          ? "no"
+          : "",
+        bedrooms: this.houseListing?.rooms.bedrooms || "",
+        bathrooms: this.houseListing?.rooms.bathrooms || "",
+        constructionYear: this.houseListing?.constructionYear || "",
+        description: this.houseListing?.description || "",
+        image: this.houseListing?.image || null,
       },
-      isImageSelected: false,
-      imageUrl: null,
+      imagePreviewUrl: this.houseListing?.image || null,
     };
   },
   validations() {
@@ -439,11 +464,13 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["createHouseListing"]),
+    ...mapActions(["createHouseListing", "updateHouseListing"]),
     async submitForm() {
       const isFormCorrect = await this.v$.$validate();
       if (!isFormCorrect) return;
-      this.createHouseListing(this.form);
+      this.isEditing
+        ? this.updateHouseListing(this.form)
+        : this.createHouseListing(this.form);
     },
     selectImage() {
       this.$refs.fileInput.click();
@@ -453,14 +480,27 @@ export default {
       if (files.length === 0) {
         return;
       }
-      this.isImageSelected = true;
-      this.imageUrl = URL.createObjectURL(files[0]);
+      this.imagePreviewUrl = URL.createObjectURL(files[0]);
       this.form.image = files[0];
     },
     clearImage() {
-      this.isImageSelected = false;
-      this.imageUrl = null;
+      this.imagePreviewUrl = null;
       this.form.image = null;
+    },
+    getStreetName(location) {
+      const regex =
+        /^(\d*[\p{L}\d '/\\\-.]+)[,\s]+(\d+)\s*([\p{L} \d\-/'"()]*)$/iu;
+      return location !== undefined ? location?.street.match(regex)[1] : false;
+    },
+    getHouseNumber(location) {
+      const regex =
+        /^(\d*[\p{L}\d '/\\\-.]+)[,\s]+(\d+)\s*([\p{L} \d\-/'"()]*)$/iu;
+      return location !== undefined ? location?.street.match(regex)[2] : false;
+    },
+    getNumberAddition(location) {
+      const regex =
+        /^(\d*[\p{L}\d '/\\\-.]+)[,\s]+(\d+)\s*([\p{L} \d\-/'"()]*)$/iu;
+      return location !== undefined ? location?.street.match(regex)[3] : false;
     },
   },
 };
@@ -651,7 +691,7 @@ export default {
   position: relative;
 }
 
-.picture-input__preview-container--bordered {
+.picture-input__preview-container--standard {
   border: 3px dashed #c3c3c3;
 }
 
