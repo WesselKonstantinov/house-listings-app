@@ -29,11 +29,9 @@ export default {
       type: String,
     },
     linkDestination: {
-      required: true,
-      type: String,
+      type: [String, Object],
     },
     iconClass: {
-      required: false,
       type: String,
     },
   },
