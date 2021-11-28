@@ -25,14 +25,16 @@
         class="card__actions-link"
         icon="ic_edit.png"
         icon-alt="Edit icon"
-        link-destination="/"
+        :link-destination="{
+          name: 'EditHouseListing',
+          params: { id: houseListing.id },
+        }"
         icon-class="card__actions-icon"
       />
       <icon-button-link
         class="card__actions-link"
         icon="ic_delete.png"
         icon-alt="Delete icon"
-        link-destination=""
         icon-class="card__actions-icon"
         @click="showConfirmDeleteModal"
       />

@@ -15,7 +15,6 @@
       <icon-button-link
         icon="ic_delete_white.png"
         icon-alt="Delete icon"
-        link-destination=""
         class="action-icon-delete"
         @click="showConfirmDeleteModal"
       />
@@ -46,12 +45,14 @@
                 <icon-button-link
                   icon="ic_edit.png"
                   icon-alt="Edit icon"
-                  link-destination="/"
+                  :link-destination="{
+                    name: 'EditHouseListing',
+                    params: { id: selectedHouseListing.id },
+                  }"
                 />
                 <icon-button-link
                   icon="ic_delete.png"
                   icon-alt="Delete icon"
-                  link-destination=""
                   class="action-icon-delete"
                   @click="showConfirmDeleteModal"
                 />
