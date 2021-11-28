@@ -73,6 +73,11 @@ export default createStore({
                 houseListing.location.city ===
                   getters.selectedHouseListing.location.city
             )
+            // Randomize the array, so that different recommendations can be shown
+            .map((a) => [Math.random(), a])
+            .sort((a, b) => a[0] - b[0])
+            .map((a) => a[1])
+            // Get a portion of the array in order to display at most three recommendations
             .slice(0, 3)
         : [],
   },
@@ -128,15 +133,52 @@ export default createStore({
         .then(() => dispatch("getHouseListings"))
         .catch((error) => console.error(error));
     },
-    deleteHouseListing({ commit }, houseListingId) {
+    updateHouseListing({ dispatch }, submittedData) {
       axios
-        .delete(`${process.env.VUE_APP_API_URL}/${houseListingId}`, {
-          headers: {
-            "X-Api-Key": process.env.VUE_APP_API_KEY,
-          },
-        })
+        .post(
+          `${process.env.VUE_APP_API_URL}/${this.state.selectedHouseListingId}`,
+          submittedData,
+          {
+            headers: {
+              "X-Api-Key": process.env.VUE_APP_API_KEY,
+            },
+          }
+        )
         .then(() => {
-          commit("removeHouseListing", houseListingId);
+          router.push({
+            name: "HouseListingDetail",
+            params: { id: this.state.selectedHouseListingId },
+          });
+          const { image } = submittedData;
+          if (image instanceof File) {
+            const imageFormData = new FormData();
+            imageFormData.append("image", image, image.name);
+            return axios.post(
+              `${process.env.VUE_APP_API_URL}/${this.state.selectedHouseListingId}/upload`,
+              imageFormData,
+              {
+                headers: {
+                  "X-Api-Key": process.env.VUE_APP_API_KEY,
+                },
+              }
+            );
+          }
+        })
+        .then(() => dispatch("getHouseListings"))
+        .catch((error) => console.error(error));
+    },
+    deleteHouseListing({ commit }) {
+      axios
+        .delete(
+          `${process.env.VUE_APP_API_URL}/${this.state.selectedHouseListingId}`,
+          {
+            headers: {
+              "X-Api-Key": process.env.VUE_APP_API_KEY,
+            },
+          }
+        )
+        .then(() => {
+          commit("removeHouseListing", this.state.selectedHouseListingId);
           commit("setIsConfirmDeleteModalVisible", false);
         })
         .catch((error) => console.error(error));
