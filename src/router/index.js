@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
 import About from "../views/About.vue";
 import HouseListingDetail from "../views/HouseListingDetail.vue";
-import NewHouseListing from "../views/NewHouseListing.vue";
+import CreateOrEditHouseListing from "../views/CreateOrEditHouseListing.vue";
 
 const routes = [
   {
@@ -22,8 +22,13 @@ const routes = [
   },
   {
     path: "/house-listings/create",
-    name: "NewHouseListing",
-    component: NewHouseListing,
+    name: "CreateHouseListing",
+    component: CreateOrEditHouseListing,
+  },
+  {
+    path: "/house-listings/:id/edit",
+    name: "EditHouseListing",
+    component: CreateOrEditHouseListing,
   },
 ];
 
