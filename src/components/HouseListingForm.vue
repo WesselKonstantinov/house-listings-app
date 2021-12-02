@@ -14,6 +14,7 @@
           'form__input--error': v$.form.streetName.$error,
         }"
         v-model="form.streetName"
+        @blur="v$.form.streetName.$touch"
       />
       <div
         v-for="error of v$.form.streetName.$errors"
@@ -37,6 +38,7 @@
           'form__input--error': v$.form.houseNumber.$error,
         }"
         v-model="form.houseNumber"
+        @blur="v$.form.houseNumber.$touch"
       />
       <div
         v-for="error of v$.form.houseNumber.$errors"
@@ -60,6 +62,7 @@
           'form__input--error': v$.form.numberAddition.$error,
         }"
         v-model="form.numberAddition"
+        @blur="v$.form.numberAddition.$touch"
       />
       <div
         v-for="error of v$.form.numberAddition.$errors"
@@ -83,6 +86,7 @@
           'form__input--error': v$.form.zip.$error,
         }"
         v-model="form.zip"
+        @blur="v$.form.zip.$touch"
       />
       <div
         v-for="error of v$.form.zip.$errors"
@@ -104,6 +108,7 @@
           'form__input--error': v$.form.city.$error,
         }"
         v-model="form.city"
+        @blur="v$.form.city.$touch"
       />
       <div
         v-for="error of v$.form.city.$errors"
@@ -175,6 +180,7 @@
           'form__input--error': v$.form.price.$error,
         }"
         v-model="form.price"
+        @blur="v$.form.price.$touch"
       />
       <div
         v-for="error of v$.form.price.$errors"
@@ -196,6 +202,7 @@
           'form__input--error': v$.form.size.$error,
         }"
         v-model="form.size"
+        @blur="v$.form.size.$touch"
       />
       <div
         v-for="error of v$.form.size.$errors"
@@ -219,6 +226,7 @@
             'form__select--error': v$.form.hasGarage.$error,
           }"
           v-model="form.hasGarage"
+          @blur="v$.form.hasGarage.$touch"
         >
           <option value="">Select</option>
           <option value="yes">Yes</option>
@@ -247,6 +255,7 @@
           'form__input--error': v$.form.bedrooms.$error,
         }"
         v-model="form.bedrooms"
+        @blur="v$.form.bedrooms.$touch"
       />
       <div
         v-for="error of v$.form.bedrooms.$errors"
@@ -270,6 +279,7 @@
           'form__input--error': v$.form.bathrooms.$error,
         }"
         v-model="form.bathrooms"
+        @blur="v$.form.bathrooms.$touch"
       />
       <div
         v-for="error of v$.form.bathrooms.$errors"
@@ -297,6 +307,7 @@
           'form__input--error': v$.form.constructionYear.$error,
         }"
         v-model="form.constructionYear"
+        @blur="v$.form.constructionYear.$touch"
       />
       <div
         v-for="error of v$.form.constructionYear.$errors"
@@ -319,6 +330,7 @@
           'form__textarea--error': v$.form.description.$error,
         }"
         v-model="form.description"
+        @blur="v$.form.description.$touch"
       ></textarea>
       <div
         v-for="error of v$.form.description.$errors"
@@ -329,7 +341,13 @@
       </div>
     </div>
     <div class="form__group">
-      <button type="submit" class="form__submit" @click.prevent="submitForm">
+      <button
+        type="submit"
+        class="form__submit"
+        :class="{ 'form__submit--disabled': isFormInCorrect }"
+        :disabled="isFormInCorrect"
+        @click.prevent="submitForm"
+      >
         {{ buttonText }}
       </button>
     </div>
@@ -341,21 +359,17 @@ import {
   required,
   requiredIf,
   helpers,
-  alpha,
   alphaNum,
   numeric,
 } from "@vuelidate/validators";
+import {
+  imageValidator,
+  zipCodeValidator,
+  cityAndStreetNameValidator,
+} from "../custom-validators";
 import useVuelidate from "@vuelidate/core";
 import { mapActions } from "vuex";
 import IconButtonLink from "./IconButtonLink.vue";
-
-const mustHaveCorrectType = (image) =>
-  !helpers.req(image) ||
-  image.type === "image/png" ||
-  image.type === "image/jpeg" ||
-  image.endsWith(".png") ||
-  image.endsWith(".jpg") ||
-  image.endsWith(".jpeg");
 
 export default {
   name: "HouseListingForm",
@@ -371,6 +385,9 @@ export default {
   computed: {
     buttonText() {
       return this.isEditing ? "Save" : "Post";
+    },
+    isFormInCorrect() {
+      return this.v$.$invalid;
     },
   },
   setup() {
@@ -408,7 +425,10 @@ export default {
       form: {
         streetName: {
           required: helpers.withMessage("Required field missing", required),
-          alphaNum,
+          cityAndStreetNameValidator: helpers.withMessage(
+            "Value must be alphabetical",
+            cityAndStreetNameValidator
+          ),
         },
         houseNumber: {
           required: helpers.withMessage("Required field missing", required),
@@ -417,11 +437,17 @@ export default {
         numberAddition: { alphaNum },
         zip: {
           required: helpers.withMessage("Required field missing", required),
-          alphaNum,
+          zipCodeValidator: helpers.withMessage(
+            "Zip code format is not valid",
+            zipCodeValidator
+          ),
         },
         city: {
           required: helpers.withMessage("Required field missing", required),
-          alpha,
+          cityAndStreetNameValidator: helpers.withMessage(
+            "Value must be alphabetical",
+            cityAndStreetNameValidator
+          ),
         },
         price: {
           required: helpers.withMessage("Required field missing", required),
@@ -454,9 +480,9 @@ export default {
             "Required image missing",
             requiredIf(!this.form.image)
           ),
-          mustHaveCorrectType: helpers.withMessage(
+          imageValidator: helpers.withMessage(
             "Image must be either PNG or JPG",
-            mustHaveCorrectType
+            imageValidator
           ),
         },
       },
@@ -464,15 +490,14 @@ export default {
   },
   methods: {
     ...mapActions(["createHouseListing", "updateHouseListing"]),
-    async submitForm() {
-      const isFormCorrect = await this.v$.$validate();
-      if (!isFormCorrect) return;
+    submitForm() {
       this.isEditing
         ? this.updateHouseListing(this.form)
         : this.createHouseListing(this.form);
     },
     selectImage() {
       this.$refs.fileInput.click();
+      this.v$.form.image.$touch();
     },
     handleImage(e) {
       const files = e.target.files;
@@ -485,6 +510,7 @@ export default {
     clearImage() {
       this.imagePreviewUrl = null;
       this.form.image = null;
+      this.v$.form.image.$touch();
     },
     getStreetName(location) {
       const regex =
@@ -704,6 +730,10 @@ export default {
   border: 1px solid transparent;
   outline: none;
   width: 100%;
+}
+
+.form__submit--disabled {
+  opacity: 0.5;
 }
 
 /* || Form error status */
