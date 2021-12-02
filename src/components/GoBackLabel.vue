@@ -38,10 +38,12 @@ export default {
 </script>
 
 <style>
+/* || Back link */
 .back-link {
-  display: none;
+  display: none; /* Hide component for mobile */
 }
 
+/* || Media queries */
 @media screen and (min-width: 768px) {
   .back-link {
     display: flex;
@@ -54,7 +56,9 @@ export default {
   }
 
   .back-link__text {
-    font-size: 16px;
+    color: var(--primary-text-color);
+    font-weight: 600;
+    font-size: 1.33333rem;
     margin: 0 10px;
   }
 }

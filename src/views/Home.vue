@@ -1,26 +1,41 @@
 <template>
-  <div class="home-page">
-    <h1 class="home-page__mobile-header">Houses</h1>
-    <p v-if="isFetching">Loading...</p>
-    <article v-else class="home-page__content">
-      <header class="home-page__content-header">
-        <h2>Houses</h2>
-      </header>
-      <div class="home-page__content-tools">
-        <search-bar />
-        <sort-button-toolbar />
-      </div>
-      <h3 v-if="resultsFound">{{ sortedHouseListingsCount }} results found</h3>
-      <no-results-found v-else-if="noResultsFound" />
-      <house-listing-card
-        v-for="houseListing in sortedHouseListings"
-        :key="houseListing.id"
-        :house-listing="houseListing"
-        @click="onChangeHouseListingDetailRoute(houseListing)"
-      />
-    </article>
-    <confirm-delete v-show="isConfirmDeleteModalVisible" />
-  </div>
+  <!-- Page heading and upload icon to be displayed on mobile -->
+  <h1 class="mobile-header">Houses</h1>
+  <icon-button-link
+    icon="ic_upload.png"
+    icon-alt="Upload Icon"
+    icon-class="action-icon--medium"
+    link-destination="/house-listings/create"
+    class="action-icon action-icon--new"
+  />
+  <p v-if="isFetching">Loading...</p>
+  <section v-else class="section">
+    <!-- Page heading and upload button to be displayed on desktop -->
+    <header class="section__header">
+      <h1>Houses</h1>
+      <button
+        class="upload-button"
+        @click="$router.push('/house-listings/create')"
+      >
+        Create new
+      </button>
+    </header>
+    <div class="section__tools">
+      <search-bar />
+      <sort-button-toolbar />
+    </div>
+    <h2 class="section__results" v-if="resultsFound">
+      {{ sortedHouseListingsCount }} results found
+    </h2>
+    <no-results-found v-else-if="noResultsFound" />
+    <house-listing-card
+      v-for="houseListing in sortedHouseListings"
+      :key="houseListing.id"
+      :house-listing="houseListing"
+      @click="onChangeHouseListingDetailRoute(houseListing)"
+    />
+  </section>
+  <confirm-delete v-show="isConfirmDeleteModalVisible" />
 </template>
 
 <script>
@@ -30,6 +45,7 @@ import HouseListingCard from "../components/HouseListingCard.vue";
 import NoResultsFound from "../components/NoResultsFound.vue";
 import SearchBar from "../components/SearchBar.vue";
 import ConfirmDelete from "../components/ConfirmDelete.vue";
+import IconButtonLink from "../components/IconButtonLink.vue";
 
 export default {
   components: {
@@ -38,6 +54,7 @@ export default {
     NoResultsFound,
     SortButtonToolbar,
     ConfirmDelete,
+    IconButtonLink,
   },
   name: "Home",
   computed: {
@@ -62,89 +79,102 @@ export default {
 </script>
 
 <style>
-.home-page__mobile-header {
+/* || Home page headers and icons */
+.mobile-header {
   text-align: center;
-  font-size: 18px;
+  font-size: 1.5rem;
   margin: 30px;
 }
 
-.home-page__content-header {
+.action-icon--new {
+  right: 5%;
+}
+
+.section__header {
   display: none;
 }
 
-@media screen and (max-width: 360px) {
-  .home-page .card__image {
-    height: 80px;
-    max-width: 80px;
-  }
-
-  .home-page .card__address {
-    margin: 0;
-    font-size: 12px;
-  }
-
-  .home-page .card__icons-container {
-    padding: 0;
-  }
-
-  .home-page .card__info {
-    margin-left: 8px;
-  }
-
-  .home-page .card__actions {
-    top: 0;
-  }
+/* || Upload button and search results */
+.upload-button {
+  border: none;
+  border-radius: 5px;
+  color: var(--button-text-color);
+  background: var(--primary-element-color) url("../assets/ic_plus_white.png") 9%
+    center no-repeat;
+  cursor: pointer;
+  text-transform: uppercase;
+  width: 200px;
+  padding-left: 30px;
 }
 
-@media screen and (min-width: 768px) {
-  .home-page {
-    margin-top: 50px;
-  }
+.section__results {
+  font-size: 1.166666rem;
+}
 
-  .home-page__mobile-header {
+/* || Media queries */
+@media screen and (min-width: 768px) {
+  .mobile-header {
     display: none;
   }
 
-  .home-page__content-header {
-    display: block;
+  .section__header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
   }
 
-  .home-page__content-header h2 {
-    font-size: 22px;
+  .section__header h1 {
+    font-size: 2.666666rem;
+    margin: 2px 0; /* Help control the size of the upload button */
   }
 
-  .home-page__content-tools {
+  .section__results {
+    font-size: 1.83333rem;
+  }
+
+  .section__tools {
     display: flex;
     justify-content: space-between;
   }
 
-  .home-page .card {
+  /* Apply styles to card components that differ from the ones used in the recommendations section */
+  .section .card {
     padding: 15px;
-    font-size: 16px;
+    font-size: 1.33333rem;
   }
 
-  .home-page .card__icon {
+  .section .card__address {
+    font-size: 1.83333rem;
+  }
+
+  .section .card__icon {
     width: 16px;
     height: 16px;
   }
 
-  .home-page .card__icon-set {
+  .section .card__icon-set {
     margin-right: 15px;
   }
 
-  .home-page .card__image {
+  .section .card__image {
     height: 140px;
     max-width: 140px;
   }
 
-  .home-page .card__address,
-  .home-page .card__price,
-  .home-page .card__location {
-    padding-bottom: 13px;
+  .section .card__icon-container {
+    padding: 0;
   }
 
-  .home-page .card__icons-container {
-    padding-top: 0;
+  .section .card__details {
+    margin-left: 20px;
+  }
+
+  .section .card__details > * {
+    margin-top: 10px;
+  }
+
+  .section .card__actions {
+    top: 10px;
   }
 }
 </style>

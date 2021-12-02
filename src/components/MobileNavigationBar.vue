@@ -1,6 +1,6 @@
 <template>
-  <nav class="nav">
-    <ul class="nav__list">
+  <nav class="mobile-nav">
+    <ul class="mobile-nav__list">
       <li>
         <icon-button-link
           :icon="getCurrentIcon('Home', 'home')"
@@ -35,26 +35,28 @@ export default {
 };
 </script>
 
-<style scoped>
-.nav {
+<style>
+/* || Mobile navigation */
+.mobile-nav {
   width: 100%;
-  background-color: #ffffff;
-  box-shadow: 1px 1px 10px #c3c3c3;
+  background-color: var(--secondary-background-color);
+  box-shadow: 1px 1px 10px var(--tertiary-element-color-dark);
   position: fixed;
   overflow: hidden;
   bottom: 0;
   z-index: 1;
 }
 
-.nav__list {
+.mobile-nav__list {
   display: flex;
   list-style: none;
   padding: 0;
   justify-content: space-around;
 }
 
+/* || Media queries */
 @media screen and (min-width: 768px) {
-  .nav {
+  .mobile-nav {
     display: none;
   }
 }

@@ -1,46 +1,51 @@
 <template>
-  <div v-if="selectedHouseListing" class="house-listing-page">
+  <div v-if="selectedHouseListing" class="house-listing">
+    <!-- Icons to be displayed on mobile -->
     <icon-button-link
       icon="ic_back_white.png"
       icon-alt="Back Icon"
+      icon-class="action-icon--medium"
+      class="action-icon action-icon--back"
       link-destination="/"
-      class="action-icon-back"
     />
     <div v-if="selectedHouseListing.madeByMe" class="action-icons-container">
       <icon-button-link
         icon="ic_edit_white.png"
         icon-alt="Edit icon"
+        icon-class="action-icon--medium"
         link-destination="/"
       />
       <icon-button-link
         icon="ic_delete_white.png"
         icon-alt="Delete icon"
-        class="action-icon-delete"
+        icon-class="action-icon--medium"
+        class="action-icon--delete"
         @click="showConfirmDeleteModal"
       />
     </div>
+    <!-- Back label to be displayed on desktop -->
     <go-back-label
       text="Back to overview"
       icon="ic_back_grey.png"
       icon-alt="Back icon"
       link-destination="/"
     />
-    <div class="house-listing-page__content">
-      <div class="house-listing-page__main">
+    <div class="house-listing__content">
+      <div class="house-listing__main">
         <img
           :src="selectedHouseListing.image"
           alt="House listing"
-          class="house-listing-page__image"
+          class="house-listing__image"
         />
-        <article class="house-listing-details">
-          <div class="house-listing-details__wrapper">
-            <div class="house-listing-details__street-and-actions">
-              <h2 class="house-listing-details__street">
+        <article class="house-listing__details">
+          <div class="house-listing__inner">
+            <div class="house-listing__address-and-actions">
+              <h1 class="house-listing__address">
                 {{ selectedHouseListing.location.street }}
-              </h2>
+              </h1>
               <div
                 v-if="selectedHouseListing.madeByMe"
-                class="house-listing-details__actions"
+                class="house-listing__actions"
               >
                 <icon-button-link
                   icon="ic_edit.png"
@@ -53,86 +58,82 @@
                 <icon-button-link
                   icon="ic_delete.png"
                   icon-alt="Delete icon"
-                  class="action-icon-delete"
+                  class="action-icon--delete"
                   @click="showConfirmDeleteModal"
                 />
               </div>
             </div>
-            <div class="house-listing-details__icon-set">
+            <div class="house-listing__icon-set">
               <img
                 src="../assets/ic_location.png"
                 alt="Location icon"
-                class="house-listing-details__icon"
+                class="house-listing__icon"
               />
-              <span class="house-listing-details__unit">{{
-                zipCodeAndCity
-              }}</span>
+              <span class="house-listing__unit">{{ zipCodeAndCity }}</span>
             </div>
-            <div class="house-listing-details__icons-container">
-              <div class="house-listing-details__icon-set">
+            <div class="house-listing__icons-container">
+              <div class="house-listing__icon-set">
                 <img
                   src="../assets/ic_price.png"
                   alt="Price icon"
-                  class="house-listing-details__icon"
+                  class="house-listing__icon"
                 />
-                <span class="house-listing-details__unit">{{
-                  formattedPrice
-                }}</span>
+                <span class="house-listing__unit">{{ formattedPrice }}</span>
               </div>
-              <div class="house-listing-details__icon-set">
+              <div class="house-listing__icon-set">
                 <img
                   src="../assets/ic_size.png"
                   alt="Size icon"
-                  class="house-listing-details__icon"
+                  class="house-listing__icon"
                 />
-                <span class="house-listing-details__unit"
+                <span class="house-listing__unit"
                   >{{ selectedHouseListing.size }} m2
                 </span>
               </div>
-              <div class="house-listing-details__icon-set">
+              <div class="house-listing__icon-set">
                 <img
                   src="../assets/ic_construction_date.png"
                   alt="Construction date icon"
-                  class="house-listing-details__icon"
+                  class="house-listing__icon"
                 />
-                <span class="house-listing-details__unit"
+                <span class="house-listing__unit"
                   >Built in {{ selectedHouseListing.constructionYear }}
                 </span>
               </div>
             </div>
-            <div class="house-listing-details__icons-container">
-              <div class="house-listing-details__icon-set">
+            <div class="house-listing__icons-container">
+              <div class="house-listing__icon-set">
                 <img
                   src="../assets/ic_bed.png"
                   alt="Bed icon"
-                  class="house-listing-details__icon"
+                  class="house-listing__icon"
                 />
-                <span class="house-listing-details__unit">{{
+                <span class="house-listing__unit">{{
                   selectedHouseListing.rooms.bedrooms
                 }}</span>
               </div>
-              <div class="house-listing-details__icon-set">
+              <div class="house-listing__icon-set">
                 <img
                   src="../assets/ic_bath.png"
                   alt="Bath icon"
-                  class="house-listing-details__icon"
+                  class="house-listing__icon"
                 />
-                <span class="house-listing-details__unit">{{
+                <span class="house-listing__unit">{{
                   selectedHouseListing.rooms.bathrooms
                 }}</span>
               </div>
-              <div class="house-listing-details__icon-set">
+              <div class="house-listing__icon-set">
                 <img
                   src="../assets/ic_garage.png"
                   alt="Garage icon"
-                  class="house-listing-details__icon"
+                  class="house-listing__icon"
                 />
-                <span class="house-listing-details__unit">{{
-                  isGaragePresent
-                }}</span>
+                <span class="house-listing__unit">{{ isGaragePresent }}</span>
               </div>
             </div>
-            <p>{{ selectedHouseListing.description }}</p>
+            <p class="house-listing__description">
+              {{ selectedHouseListing.description }}
+            </p>
           </div>
         </article>
         <confirm-delete v-show="isConfirmDeleteModalVisible" />
@@ -193,7 +194,8 @@ export default {
 </script>
 
 <style>
-.house-listing-page {
+/* || Page layout */
+.house-listing {
   /* Give page full width on mobile despite being inside a centered container */
   left: 50%;
   margin-left: -50vw;
@@ -204,14 +206,19 @@ export default {
   width: 100vw;
 }
 
-/* Keeps the icons correctly aligned within the main container on mobile */
-.action-icon-back,
+/* || Icon layout for mobile */
+.action-icon,
 .action-icons-container {
-  position: absolute;
-  top: 30px;
+  position: absolute; /* Keep the icons correctly aligned within the main container on mobile */
+  top: 31.5px;
 }
 
-.action-icon-back {
+.action-icon--medium {
+  width: 18px;
+  height: 18px;
+}
+
+.action-icon--back {
   left: 5%;
 }
 
@@ -219,122 +226,118 @@ export default {
   right: 5%;
 }
 
-.action-icon-delete {
+.action-icon--delete {
   margin-left: 20px;
 }
 
-.house-listing-page__image {
+/* || House listing image and information */
+.house-listing__image {
   width: 100%;
 }
 
-.house-listing-details {
-  background-color: #ffffff;
+.house-listing__details {
+  background-color: var(--secondary-background-color);
   border-radius: 15px 15px 0 0;
   position: relative;
   top: -20px;
 }
 
-.house-listing-details__wrapper {
+.house-listing__inner {
   width: 90%;
   margin: 0 auto;
   padding: 20px 0;
 }
 
-.house-listing-details__wrapper > * {
+.house-listing__inner > * {
   margin-bottom: 10px;
 }
 
-.house-listing-details {
-  font-size: 12px;
-  color: #4a4b4c;
-}
-
-.house-listing-details__street {
-  font-size: 18px;
+.house-listing__address {
+  font-size: 1.5rem;
   margin: 0;
-  color: #000000;
 }
 
-.house-listing-details__actions {
-  display: none;
+.house-listing__actions {
+  display: none; /* Hide buttons on mobile, since icons are used instead */
 }
 
-.house-listing-details__icons-container {
+.house-listing__icons-container {
   display: flex;
 }
 
-.house-listing-details__icon-set {
+.house-listing__icon-set {
   display: inline-flex;
   font-weight: 600;
 }
 
-.house-listing-details__icons-container > .house-listing-details__icon-set {
+.house-listing__icons-container > .house-listing__icon-set {
   margin-right: 20px;
 }
 
-.house-listing-details__icon {
+.house-listing__icon {
   width: 12px;
   height: 12px;
   align-self: center;
 }
 
-.house-listing-details__unit {
+.house-listing__unit {
   margin-left: 6px;
 }
 
+/* || Media queries */
 @media screen and (min-width: 768px) {
-  .house-listing-page {
+  .house-listing {
+    /* Resize page to centered container width */
     position: static;
     width: initial;
     max-width: initial;
     margin: 50px auto;
   }
 
-  .house-listing-details {
+  .house-listing__details {
     position: static;
     border-radius: 0;
     margin-top: -5px;
   }
 
-  .house-listing-details h2 {
-    font-size: 32px;
+  .house-listing__address {
+    font-size: 2.666666rem;
   }
 
-  .house-listing-details p {
-    font-size: 18px;
+  .house-listing__description {
     line-height: 1.8;
   }
 
-  .house-listing-details__icon-set {
-    font-size: 16px;
+  .house-listing__icon-set {
+    font-size: 1.33333rem;
   }
 
-  .house-listing-details__icon {
+  .house-listing__icon {
     width: 16px;
     height: 16px;
   }
 
-  .action-icon-back,
+  .action-icon,
   .action-icons-container {
     display: none;
   }
 
-  .house-listing-details__actions {
+  .house-listing__actions {
     display: initial;
   }
 
-  .house-listing-details__street-and-actions {
+  .house-listing__address-and-actions {
     display: flex;
     justify-content: space-between;
   }
 
-  .house-listing-details__actions {
+  .house-listing__actions {
     align-self: center;
   }
 }
 
 @media screen and (min-width: 1200px) {
-  .house-listing-page__content {
+  .house-listing__content {
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 70px;

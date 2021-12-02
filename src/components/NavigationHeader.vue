@@ -1,6 +1,6 @@
 <template>
   <header class="header">
-    <div class="header__container">
+    <div class="header__inner">
       <div class="logo">
         <img src="../assets/img_logo_dtt.png" alt="DTT logo" />
       </div>
@@ -25,14 +25,15 @@ export default {
 </script>
 
 <style scoped>
+/* || Header logo and main navigation for desktop */
 .header {
-  background-color: #ffffff;
-  font-size: 18px;
-  padding: 0.5em;
-  display: none; /* Hide navigation header for smaller screens */
+  background-color: var(--secondary-background-color);
+  padding: 14px;
+  margin-bottom: 50px;
+  display: none; /* Hide navigation header for mobile */
 }
 
-.header__container {
+.header__inner {
   max-width: 1080px;
   margin: 0 auto;
   display: flex;
@@ -53,18 +54,20 @@ export default {
 }
 
 .nav__link {
+  font-weight: 500;
   text-decoration: none;
-  color: #c3c3c3;
+  color: var(--tertiary-element-color-dark);
 }
 
 .router-link-exact-active {
-  color: #000000;
+  color: var(--primary-text-color);
   font-weight: 700;
 }
 
+/* || Media queries */
 @media screen and (min-width: 768px) {
   .header {
-    display: block; /* Display navigation header on larger screens */
+    display: block;
   }
 }
 </style>

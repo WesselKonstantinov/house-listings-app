@@ -1,5 +1,4 @@
 <template>
-  <h2>House listing form</h2>
   <form class="form" enctype="multipart/form-data">
     <div class="form__group">
       <label for="street-name" class="form__label form__label--required"
@@ -365,11 +364,11 @@ export default {
     houseListing: {
       type: Object,
     },
+    isEditing: {
+      type: Boolean,
+    },
   },
   computed: {
-    isEditing() {
-      return "id" in this.$route.params;
-    },
     buttonText() {
       return this.isEditing ? "Save" : "Post";
     },
@@ -507,12 +506,10 @@ export default {
 </script>
 
 <style>
+/* || Form layout */
 .form {
-  font-size: 12px;
   display: grid;
-  grid-auto-columns: minmax(0, 1fr);
-  grid-auto-flow: column;
-  gap: 10px;
+  gap: 20px;
   grid-template-areas:
     "street-name street-name"
     "house-number addition"
@@ -525,18 +522,7 @@ export default {
     "construction-date construction-date"
     "description description"
     "submit submit";
-}
-
-.form__label {
-  color: #4a4b4c;
-  display: block;
-  font-family: "Montserrat", sans-serif;
-  font-weight: 600;
-  margin-bottom: 8px;
-}
-
-.form__label--required::after {
-  content: "*";
+  margin-bottom: 50px;
 }
 
 .form__group:nth-of-type(1) {
@@ -595,10 +581,22 @@ export default {
   grid-area: submit;
 }
 
+/* || Form labels */
+.form__label {
+  color: var(--secondary-text-color);
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.form__label--required::after {
+  content: "*";
+}
+
+/* || Form input fields and placeholders */
 .form__input,
 .form__select,
-.form__textarea,
-.form__submit {
+.form__textarea {
   font-family: inherit;
   font-size: 100%;
   padding: 1em;
@@ -606,16 +604,21 @@ export default {
   border: 1px solid transparent;
   outline: none;
   width: 100%;
-  color: #000;
+}
+
+.form__input:focus,
+.form__select:focus,
+.form__textarea:focus {
+  border: 1px solid var(--tertiary-element-color-dark);
 }
 
 .form__select {
   appearance: none;
-  color: #c3c3c3;
+  color: var(--tertiary-element-color-dark);
 }
 
 .form__select--selected {
-  color: #000;
+  color: var(--secondary-text-color);
 }
 
 .form__select-wrapper {
@@ -625,8 +628,8 @@ export default {
 .form__select-wrapper::before,
 .form__select-wrapper::after {
   content: "";
-  border: solid #c3c3c3;
-  border-width: 0 2px 2px 0;
+  border: solid var(--tertiary-element-color-dark);
+  border-width: 0 2px 2px 0; /* Shape the borders into arrows */
   padding: 3px;
   position: absolute;
   top: 50%;
@@ -644,42 +647,21 @@ export default {
 
 .form__textarea {
   resize: none;
-}
-
-.form__submit {
-  background-color: #eb5440;
-  color: #fff;
-  font-weight: bold;
-  text-transform: uppercase;
-  cursor: pointer;
-}
-
-.form__error-message {
-  font-family: "Montserrat", sans-serif;
-  font-style: italic;
-  color: red;
-  margin-top: 10px;
-}
-
-.form__input--error,
-.form__select--error,
-.form__textarea--error {
-  border: 1px solid red;
+  height: 100px;
 }
 
 .form__input::placeholder,
 .form__textarea::placeholder {
-  color: #c3c3c3;
+  color: var(--tertiary-element-color-dark);
 }
 
-.form__input--error::placeholder,
-.form__textarea--error::placeholder,
-.form__select--error {
-  color: red;
-}
-
+/* || Image uploader and preview */
 .picture-input {
   width: 150px;
+}
+
+.picture-input__input {
+  display: none; /* Replace default input file element with the custom image uploader */
 }
 
 .picture-input__preview-container {
@@ -692,11 +674,11 @@ export default {
 }
 
 .picture-input__preview-container--standard {
-  border: 3px dashed #c3c3c3;
+  border: 3px dashed var(--tertiary-element-color-dark);
 }
 
 .picture-input__preview-container--error {
-  border: 3px dashed red;
+  border: 3px dashed var(--error-text-color);
 }
 
 .picture-input__preview {
@@ -706,19 +688,58 @@ export default {
 }
 
 .picture-input__clear {
-  z-index: 10;
   position: absolute;
   top: -10px;
   right: -15px;
 }
 
-.picture-input__input {
-  display: none;
+/* || Form submit button */
+.form__submit {
+  background-color: var(--primary-element-color);
+  color: var(--button-text-color);
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 1em;
+  border-radius: 5px;
+  border: 1px solid transparent;
+  outline: none;
+  width: 100%;
 }
 
+/* || Form error status */
+.form__error-message {
+  font-family: var(--subsidiary-font);
+  font-style: italic;
+  font-weight: 500;
+  color: var(--error-text-color);
+  margin-top: 10px;
+}
+
+.form__input--error,
+.form__select--error,
+.form__textarea--error {
+  border: 1px solid var(--error-text-color);
+}
+
+.form__input--error::placeholder,
+.form__textarea--error::placeholder,
+.form__select--error {
+  color: var(--error-text-color);
+}
+
+/* || Media queries */
 @media screen and (min-width: 768px) {
   .form {
-    font-size: 14px;
+    font-size: 1.166666rem;
+    width: 400px;
+  }
+
+  .form__textarea {
+    height: 150px;
+  }
+
+  .form__group:nth-of-type(14) {
+    grid-column: 2 / 3;
   }
 }
 </style>

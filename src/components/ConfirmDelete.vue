@@ -2,8 +2,8 @@
   <div class="modal">
     <div class="modal__backdrop"></div>
     <div class="modal__body">
-      <h2>Delete listing</h2>
-      <p>
+      <h2 class="modal__heading">Delete listing</h2>
+      <p class="modal__message">
         Are you sure you want to delete this listing?<br />This action cannot be
         undone.
       </p>
@@ -39,6 +39,7 @@ export default {
 </script>
 
 <style>
+/* || Modal elements */
 .modal__backdrop {
   position: fixed;
   top: 0;
@@ -49,7 +50,7 @@ export default {
 }
 
 .modal__body {
-  background-color: #ffffff;
+  background-color: var(--secondary-background-color);
   border-radius: 15px;
   position: fixed;
   padding: 2em 0;
@@ -59,15 +60,14 @@ export default {
   text-align: center;
 }
 
-.modal__body h2 {
+.modal__heading {
   margin: 0;
-  font-size: 18px;
+  font-size: 1.5rem;
 }
 
-.modal__body p {
-  font-size: 12px;
+.modal__message {
   margin-bottom: 30px;
-  color: #4a4b4c;
+  font-size: 1rem;
 }
 
 .modal__button {
@@ -79,18 +79,18 @@ export default {
   padding: 1em 0;
   border: none;
   border-radius: 5px;
-  color: #fff;
-  font-weight: bold;
-  font-size: 12px;
+  color: var(--button-text-color);
+  font-size: 1rem;
   text-transform: uppercase;
-  background-color: #4a4b4c;
+  background-color: var(--secondary-element-color);
   cursor: pointer;
 }
 
 .modal__button--primary {
-  background-color: #eb5440;
+  background-color: var(--primary-element-color);
 }
 
+/* || Media queries */
 @media screen and (min-width: 768px) {
   .modal__body {
     left: 20%;

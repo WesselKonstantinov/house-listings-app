@@ -1,6 +1,6 @@
 <template>
   <aside class="recommendations" v-if="areRecommendedHouseListingsPresent">
-    <h3>Recommended for you</h3>
+    <h2 class="recommendations__heading">Recommended for you</h2>
     <house-listing-card
       v-for="houseListing in recommendedHouseListingsByLocation"
       :key="houseListing.id"
@@ -35,29 +35,37 @@ export default {
 </script>
 
 <style>
+/* || Recommendations section */
 .recommendations {
   width: 90%;
   margin: 0 auto;
 }
 
-.recommendations > h3 {
-  font-size: 14px;
+.recommendations__heading {
+  font-size: 1.166666rem;
   margin-top: 0;
 }
 
+/* || Media queries */
 @media screen and (min-width: 768px) {
   .recommendations {
     width: 100%;
   }
 
-  .recommendations > h3 {
-    font-size: 18px;
+  .recommendations__heading {
+    font-size: 1.83333rem;
     margin-top: 20px;
+  }
+
+  .recommendations .card__price,
+  .recommendations .card__location,
+  .recommendations .card__unit {
+    font-size: 1rem; /* Prevent font size from being set to a larger size  */
   }
 }
 
 @media screen and (min-width: 1200px) {
-  .recommendations > h3 {
+  .recommendations__heading {
     margin-top: 0;
   }
 }
