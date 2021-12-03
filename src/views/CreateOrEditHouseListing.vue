@@ -4,7 +4,7 @@
   <icon-button-link
     icon="ic_back_grey.png"
     icon-alt="Back Icon"
-    icon-class="action-icon--medium"
+    icon-class="action-icon--small"
     :link-destination="previousRoute"
     class="action-icon action-icon--back"
   />

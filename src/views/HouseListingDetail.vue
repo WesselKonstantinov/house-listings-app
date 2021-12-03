@@ -4,7 +4,6 @@
     <icon-button-link
       icon="ic_back_white.png"
       icon-alt="Back Icon"
-      icon-class="action-icon--medium"
       class="action-icon action-icon--back"
       link-destination="/"
     />
@@ -12,13 +11,15 @@
       <icon-button-link
         icon="ic_edit_white.png"
         icon-alt="Edit icon"
-        icon-class="action-icon--medium"
-        link-destination="/"
+        icon-class="action-icon--small"
+        :link-destination="{
+          name: 'EditHouseListing',
+          params: { id: selectedHouseListing.id },
+        }"
       />
       <icon-button-link
         icon="ic_delete_white.png"
         icon-alt="Delete icon"
-        icon-class="action-icon--medium"
         class="action-icon--delete"
         @click="showConfirmDeleteModal"
       />
@@ -211,6 +212,11 @@ export default {
 .action-icons-container {
   position: absolute; /* Keep the icons correctly aligned within the main container on mobile */
   top: 31.5px;
+}
+
+.action-icon--small {
+  width: 16px;
+  height: 16px;
 }
 
 .action-icon--medium {
