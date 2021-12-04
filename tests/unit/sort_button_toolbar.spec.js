@@ -1,9 +1,25 @@
 import { shallowMount } from "@vue/test-utils";
 import SortButtonToolbar from "@/components/SortButtonToolbar.vue";
+import { createStore } from "vuex";
+
+const store = createStore({
+  state() {
+    return {
+      sortOption: "price",
+    };
+  },
+  mutations: {
+    setSortOption(state, sortOption) {
+      state.sortOption = sortOption;
+    },
+  },
+});
 
 describe("SortButtonToolbar.vue", () => {
   const wrapper = shallowMount(SortButtonToolbar, {
-    props: { sortOption: "price" },
+    global: {
+      plugins: [store],
+    },
   });
 
   it("renders three buttons named 'Price', 'Size' and 'Year' in a group", () => {
@@ -21,9 +37,11 @@ describe("SortButtonToolbar.vue", () => {
     expect(sortButtons[2].classes()).not.toContain("button--active");
   });
 
-  it("emits an event when a button is clicked", () => {
+  it("changes the active status of a button when it is clicked", async () => {
     const sortButtons = wrapper.findAll(".button-group > button");
-    sortButtons[1].trigger("click");
-    expect(wrapper.emitted()).toHaveProperty("changeSortOption");
+    await sortButtons[1].trigger("click");
+    expect(sortButtons[1].classes()).toContain("button--active");
+    expect(sortButtons[0].classes()).not.toContain("button--active");
+    expect(sortButtons[2].classes()).not.toContain("button--active");
   });
 });
