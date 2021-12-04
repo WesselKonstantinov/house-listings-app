@@ -187,10 +187,6 @@ export default {
     const houseListingId = Number(this.$route.params.id);
     this.setSelectedHouseListing(houseListingId);
   },
-  updated() {
-    const houseListingId = Number(this.$route.params.id);
-    this.setSelectedHouseListing(houseListingId);
-  },
 };
 </script>
 

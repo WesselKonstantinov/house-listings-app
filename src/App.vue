@@ -2,7 +2,7 @@
   <navigation-header />
   <mobile-navigation-bar />
   <main class="main-content">
-    <router-view />
+    <router-view :key="$route.path" />
   </main>
 </template>
 
