@@ -1,15 +1,22 @@
 describe("The house listing detail page", () => {
-  beforeEach(() => {
+  before(() => {
     cy.visit("/");
   });
 
-  it("does not show a section with recommendations if they are absent", () => {
-    cy.get(".home-page__content > article").first().click();
-    cy.get(".recommendations").should("not.exist");
+  it("displays the address, postal code and city of a listing", () => {
+    cy.get(".section > article").first().click();
+    cy.get(".house-listing__address").should("be.visible");
+    cy.get(".house-listing__unit").first().should("be.visible");
   });
 
-  it("shows a section with recommendations if they are present", () => {
-    cy.get(".home-page__content > article:nth-of-type(2)").click();
-    cy.get(".recommendations").should("exist");
+  it("displays the description, image, number of bedrooms and bathrooms, size, construction and if the listing has a garage or not", () => {
+    cy.get(".house-listing__description").should("be.visible");
+    cy.get(".house-listing__image").should("be.visible");
+    cy.get(".house-listing__unit").eq(1).should("be.visible");
+    cy.get(".house-listing__unit").eq(2).should("be.visible");
+    cy.get(".house-listing__unit").eq(3).should("be.visible");
+    cy.get(".house-listing__unit").eq(4).should("be.visible");
+    cy.get(".house-listing__unit").eq(5).should("be.visible");
+    cy.get(".house-listing__unit").eq(6).should("be.visible");
   });
 });

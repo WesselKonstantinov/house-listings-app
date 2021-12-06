@@ -11,12 +11,16 @@ describe("The search bar", () => {
 
   it("enables the user to see a result indication", () => {
     cy.get("input").type("Amsterdam");
-    cy.contains("results found").should("be.visible");
-    cy.contains("results found").then(($el) => {
-      const resultsNumber = $el.text()[0];
-      cy.get(".home-page__content > article").should(
-        "have.length",
-        resultsNumber
+    cy.window().then((win) => {
+      const {
+        __store__: {
+          getters: { sortedHouseListingsCount },
+        },
+      } = win;
+      cy.get("h2.section__results").should("be.visible");
+      cy.get("h2.section__results").should(
+        "contain",
+        `${sortedHouseListingsCount}`
       );
     });
   });
