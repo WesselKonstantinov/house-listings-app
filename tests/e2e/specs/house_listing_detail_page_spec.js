@@ -19,4 +19,26 @@ describe("The house listing detail page", () => {
     cy.get(".house-listing__unit").eq(5).should("be.visible");
     cy.get(".house-listing__unit").eq(6).should("be.visible");
   });
+
+  it("displays an edit and delete button if the user owns the listing", () => {
+    cy.visit("/house-listings/create");
+    cy.get("#street-name").type("Alkmaarstraat");
+    cy.get("#house-number").type("15");
+    cy.get("#number-addition").type("E");
+    cy.get("#zip").type("1024 FX");
+    cy.get("#city").type("Amsterdam");
+    const fixtureFile = "img_placeholder_house.png";
+    cy.get("#image").attachFile(fixtureFile);
+    cy.get("#price").type("1200");
+    cy.get("#size").type("100");
+    cy.get("#has-garage").select("No");
+    cy.get("#bedrooms").type("3");
+    cy.get("#bathrooms").type("1");
+    cy.get("#construction-year").type("2010");
+    cy.get("#description").type(
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
+    );
+    cy.get(".form__submit").click();
+    cy.get(".house-listing__actions").should("be.visible");
+  });
 });
