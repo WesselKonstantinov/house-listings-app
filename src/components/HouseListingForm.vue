@@ -376,7 +376,7 @@ export default {
   components: { IconButtonLink },
   props: {
     houseListing: {
-      type: Object,
+      type: Object, // Or undefined if no listing has been selected
     },
     isEditing: {
       type: Boolean,
@@ -497,7 +497,7 @@ export default {
     },
     selectImage() {
       this.$refs.fileInput.click();
-      this.v$.form.image.$touch();
+      this.v$.form.image.$touch(); // Trigger validation once the user interacts with the element
     },
     handleImage(e) {
       const files = e.target.files;

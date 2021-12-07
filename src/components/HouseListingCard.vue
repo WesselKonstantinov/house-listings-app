@@ -70,7 +70,7 @@ export default {
     ]),
     showConfirmDeleteModal() {
       this.setIsConfirmDeleteModalVisible(true);
-      this.setSelectedHouseListing(this.houseListing.id);
+      this.setSelectedHouseListing(this.houseListing.id); // Select the correct listing if the user proceeds to delete it
     },
   },
 };

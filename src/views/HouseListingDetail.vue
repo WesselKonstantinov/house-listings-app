@@ -183,7 +183,7 @@ export default {
   },
   created() {
     /* Route params id needs to be a number instead of a string
-    for correct matching with the id of a single house listing object. */
+    for correct matching with the id of a single house listing object */
     const houseListingId = Number(this.$route.params.id);
     this.setSelectedHouseListing(houseListingId);
   },

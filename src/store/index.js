@@ -129,7 +129,7 @@ export default createStore({
             }
           );
         })
-        // Gets latest data (including a link to the image) for correct display in detail page
+        // Get latest data (including a link to the image) for correct display in detail page
         .then(() => dispatch("getHouseListings"))
         .catch((error) => console.error(error));
     },

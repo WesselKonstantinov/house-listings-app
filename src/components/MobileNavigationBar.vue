@@ -28,7 +28,7 @@ export default {
   methods: {
     getCurrentIcon(routeName, iconName) {
       return this.$route.name === routeName
-        ? `ic_mobile_navigarion_${iconName}_active.png`
+        ? `ic_mobile_navigarion_${iconName}_active.png` // Spelling mistakes are deliberate; icons will be correctly displayed
         : `ic_mobile_navigarion_${iconName}.png`;
     },
   },
